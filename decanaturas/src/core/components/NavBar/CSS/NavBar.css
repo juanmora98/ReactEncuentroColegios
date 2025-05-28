@@ -1,0 +1,64 @@
+/* Navbar contenedor */
+.navbar {
+    position: relative;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    min-height: 80px; /* igual al alto del logo */
+}
+
+#estadistica {
+    background-color: #00D900;
+}
+
+#ciberseguridad {
+    background-color: #bccf1b;
+}
+
+#IA {
+    background-color: #6459c4;
+}
+
+#sistemas {
+    background-color: #008542;
+}
+
+#escuela {
+    background-color: #990000;
+}
+
+#CiberSis {
+    background: linear-gradient(135deg, #008542, #bccf1b);
+}
+
+#EstIA {
+    background: linear-gradient(135deg, #00D900, #6459c4);
+}
+
+/* Logo a la izquierda absoluta */
+.navbar-logo {
+    position: absolute;
+    top: 52%;
+    transform: translateY(-50%);
+}
+
+.navbar-logo img {
+    height: 100px;
+    width: auto;
+}
+
+/* Título absolutamente centrado */
+.navbar-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.navbar-title h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: white;
+}
