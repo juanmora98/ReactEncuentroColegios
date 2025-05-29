@@ -1,17 +1,18 @@
-import escuelaLogo from 'resources/img/LOGO ESCUELA/Fondo Blanco/LogoTipo2.jpg';
+import React from 'react';
+import escuelaLogo from 'resources/img/LOGOESCUELA/FondoBlanco/LogoTipo1.jpg';
 import '../CSS/NavBar.css';
 
-function NavBar() {
+function NavBar(props) {
   return (
     <header>
-      <nav className="navbar" id="escuela">
+      <nav className="navbar" id={props.ing}>
         <div className="navbar-logo">
             <a href="https://www.escuelaing.edu.co/es/" target="_blank" rel='noreferrer'>
                 <img src={escuelaLogo} alt="Logo"/>
             </a>
         </div>
         <div className="navbar-title">
-            <h1>DECANATURAS</h1>
+            <h1>{props.ingName}</h1>
         </div>
       </nav>
   </header>
