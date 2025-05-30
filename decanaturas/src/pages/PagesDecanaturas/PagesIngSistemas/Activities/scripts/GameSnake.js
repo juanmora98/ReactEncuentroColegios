@@ -1,6 +1,6 @@
 let estadoCulebra = { snake: [1, 1], apples: [[0, 0], [3, 3]] };
 
-export function moverCulebra() {
+export function moverCulebra(props) {
     const code = document.getElementById("code2").value;
     const posMatch = code.match(/move\s*=\s*\[(-?\d+),\s*(-?\d+)\]/);
     const move = [parseInt(posMatch[1]), parseInt(posMatch[2])];
@@ -25,15 +25,15 @@ export function moverCulebra() {
             dibujarMatriz();
             const r = document.getElementById("resultado2");
             if (estadoCulebra.apples.length === 0) {
+                props.gamesInstance.validationActivities(1);
+                props.onActivityComplete();
                 r.textContent = "¡Comiste todas las manzanas!";
                 r.style.color = "green";
-                //completado2 = true;
             } else {
                 r.textContent = "Aún quedan manzanas.";
                 r.style.color = "orange";
             }
         }
-        //verificarTodo();
     }
 
 }
@@ -59,4 +59,3 @@ export function dibujarMatriz() {
         }
     }
 }
-//dibujarMatriz();

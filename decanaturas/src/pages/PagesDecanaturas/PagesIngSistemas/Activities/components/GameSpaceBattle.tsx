@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Attack } from '../scripts/GameSpaceBattle';
 
-function GameSpaceBattle() {
+function GameSpaceBattle(props) {
   const codeDefault = `Ajusta el daño del jugador para vencer al marciano
 player_damage = 10
 marciano_hp = 50`;
@@ -34,7 +34,7 @@ marciano_hp = 50`;
           <div id="resultado1" className="result-box"></div>
         </div>
       </div>
-      <button onClick={Attack}>Ejecutar Código</button>
+      <button onClick={() => Attack(props)}>Ejecutar Código</button>
     </section>
   );
 }

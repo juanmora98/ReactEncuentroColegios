@@ -1,5 +1,4 @@
-// Actividad 3: Red computacional
-function conectarRed() {
+export function conectarRed(props) {
     const code = document.getElementById("code3").value;
 
     try {
@@ -106,16 +105,15 @@ function conectarRed() {
         red.appendChild(cloudDiv);
 
         const r = document.getElementById("resultado3");
-        if (conectadosA == 5 && conectadosB == 5 && cloudReady) {
+        if (conectadosA === 5 && conectadosB === 5 && cloudReady) {
+            props.gamesInstance.validationActivities(2);
+            props.onActivityComplete();
             r.textContent = "¡Red conectada exitosamente!";
             r.style.color = "green";
-            //completado3 = true;
         } else {
             r.textContent = "Faltan conexiones o IPs. Asegúrate de conectar todos los PCs por grupo y ambos servidores a la nube.";
             r.style.color = "orange";
         }
-
-        //verificarTodo();
     } catch (e) {
         document.getElementById("resultado3").textContent = "Error en el código. Verifica la sintaxis.";
     }
@@ -127,20 +125,20 @@ function tieneDuplicados(array) {
     return new Set(ips).size !== ips.length;
 }
 
-  function reiniciarRed() {
-    document.getElementById("code3").value = `# Asigna IPs para conectar computadoras a sus servidores
-        # y conecta servidores a la nube
-        grupoA = ["192.168.0.1", "192.168.0.2", "", "", ""]
-        grupoB = ["", "192.168.1.2", "192.168.1.3", "", ""]
-        servidorA = "192.168.0.100"
-        servidorB = "192.168.1.10"`;
+export function reiniciarRed() {
+    document.getElementById("code3").value = `Asigna IPs para conectar computadoras a sus servidores
+y conecta servidores a la nube
+grupoA = ["192.168.0.1", "192.168.0.2", "", "", ""]
+grupoB = ["", "192.168.1.2", "192.168.1.3", "", ""]
+servidorA = "192.168.0.100"
+servidorB = "192.168.1.10"`;
     document.getElementById("redVisual").innerHTML = "";
     document.getElementById("resultado3").textContent = "";
     inicializarRed();
     //completado3 = false;
   }
 
-  function inicializarRed() {
+export function inicializarRed() {
     const grupoA = ["192.168.0.1", "192.168.0.2", "", "", ""];
     const grupoB = ["", "192.168.1.2", "192.168.1.3", "", ""];
     const servidorA = "192.168.0.100"; // IP del Servidor A
