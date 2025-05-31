@@ -23,8 +23,8 @@ Prueba moverlo 1, 0 y luego 0,-1`;
           <div id="matrizJuego" className="matrix-display"></div>
       </div>
       <div id="tableroInicial" className="matrix-display"></div>
-        <button onClick={() => moverCulebra(props)}>Mover Culebra</button>
-        <button onClick={reiniciarCulebra}>Reiniciar</button>
+        <button onClick={() => moverCulebra(props)} disabled={props.completed}>Mover Culebra</button>
+        <button onClick={reiniciarCulebra} disabled={props.completed}>Reiniciar</button>
       <div id="resultado2" className="result-box"></div>
     </section>
   );

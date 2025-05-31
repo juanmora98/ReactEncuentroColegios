@@ -18,4 +18,9 @@ export class Games {
   getCountActivities() {
     return this.countActivities;
   }
+
+  getActivitiesCompleted(position) {
+    return this.ActivitiesCompleted[position];
+  }
+
 }

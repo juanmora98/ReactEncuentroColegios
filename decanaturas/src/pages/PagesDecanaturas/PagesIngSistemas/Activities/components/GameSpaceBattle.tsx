@@ -34,7 +34,7 @@ marciano_hp = 50`;
           <div id="resultado1" className="result-box"></div>
         </div>
       </div>
-      <button onClick={() => Attack(props)}>Ejecutar Código</button>
+      <button onClick={() => Attack(props)} disabled={props.completed}>Ejecutar Código</button>
     </section>
   );
 }

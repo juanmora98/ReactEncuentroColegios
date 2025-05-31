@@ -24,8 +24,8 @@ servidorB = "192.168.1.10"`;
           onChange={e => setCode(e.target.value)}/>
         <div id="redVisual" className="network-display"></div>
       </div>
-      <button onClick={() => conectarRed(props)}>Ejecutar Código</button>
-      <button onClick={reiniciarRed}>Reiniciar</button>
+      <button onClick={() => conectarRed(props)} disabled={props.completed}>Ejecutar Código</button>
+      <button onClick={reiniciarRed} disabled={props.completed}>Reiniciar</button>
       <div id="resultado3" className="result-box"></div>
     </section>
   );
