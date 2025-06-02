@@ -1,7 +1,7 @@
 import '../styles/styles.css';
 import 'core/styles/core.css'
-import {Games} from '../scripts/Games';
 import { Activities } from '../Activities/index';
+import {Games} from '../scripts/Games';
 import React, {useState} from 'react';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import {Navigation} from 'services/scripts/Navigation';

@@ -22,5 +22,4 @@ export class Games {
   getActivitiesCompleted(position) {
     return this.ActivitiesCompleted[position];
   }
-
 }
