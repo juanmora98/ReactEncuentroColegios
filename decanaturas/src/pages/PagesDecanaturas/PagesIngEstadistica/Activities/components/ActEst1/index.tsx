@@ -50,7 +50,7 @@ function ActivityController() {
               </a>
             </div>
             <div className="materials-section">
-              <h4><strong>Necesitas ayuda?</strong></h4>
+              <h4><strong>¿Necesitas ayuda?</strong></h4>
               <a href="/resources/pdf/explicacion_promedio_media_moda.pdf" download>
                 <img src={IconHelp} alt="Descargar explicación PDF" />
               </a>

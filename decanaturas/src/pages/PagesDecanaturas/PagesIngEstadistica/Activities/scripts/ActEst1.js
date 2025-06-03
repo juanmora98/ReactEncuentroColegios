@@ -1,5 +1,3 @@
-import {NavigationOnClick} from "services/scripts/Navigation.js";
-
 export function AnswerValidation(props) {
     const question1= 9.4;   // Promedio de horas de estudio por semana
     const question2= 5;   // Moda en horas dedicadas a actividades extracurriculares
