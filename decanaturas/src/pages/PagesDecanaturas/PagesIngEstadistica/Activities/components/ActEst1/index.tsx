@@ -45,13 +45,13 @@ function ActivityController() {
           <div className="materials">
             <div className="materials-section">
               <h4><strong>Tabla de datos.</strong></h4>
-              <a href="/resources/excel/tabla_estudiantes.xlsx" download>
+              <a href={`${process.env.PUBLIC_URL}/resources/excel/tabla_estudiantes.xlsx`} download>
                 <img src={IconLupa} alt="Descargar tabla de datos" />
               </a>
             </div>
             <div className="materials-section">
               <h4><strong>¿Necesitas ayuda?</strong></h4>
-              <a href="/resources/pdf/explicacion_promedio_media_moda.pdf" download>
+              <a href={`${process.env.PUBLIC_URL}/resources/pdf/explicacion_promedio_media_moda.pdf`} download>
                 <img src={IconHelp} alt="Descargar explicación PDF" />
               </a>
             </div>

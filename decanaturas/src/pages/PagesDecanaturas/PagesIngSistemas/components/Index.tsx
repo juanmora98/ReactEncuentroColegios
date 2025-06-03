@@ -1,7 +1,7 @@
 import '../styles/styles.css';
 import 'core/styles/core.css'
 import { Activities } from '../Activities/index';
-import {Games} from '../scripts/Games';
+import {Games} from '../scripts/games';
 import React, {useState} from 'react';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import {Navigation} from 'services/scripts/Navigation';
@@ -20,7 +20,6 @@ function Index() {
     </div>
   );
 }
-
 function GamesController(props) {
   const navigate = Navigation();
   const [count, setCount] = useState(props.gamesInstance.getCountActivities());

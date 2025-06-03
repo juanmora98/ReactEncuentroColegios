@@ -17,9 +17,19 @@ input[type="number"] {
     width: 80%;
 }
 
-#error-message {
+#mensajeFinal{
     font-size: 18px;
     margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+.congratulation-message {
+    color: green;
+    font-weight: bold;
 }
 
 .activity-description {
