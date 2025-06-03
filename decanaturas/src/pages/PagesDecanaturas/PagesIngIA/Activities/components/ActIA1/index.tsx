@@ -2,10 +2,10 @@ import React from 'react';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import BackgroundCard from 'core/components/Activities/BackgroundCard/components/BackgroundCard';
 import {Navigation} from 'services/scripts/Navigation';
-import '../styles/ActIA1.css';
+import '../../styles/ActIA1.css';
 import IALogo from 'resources/img/IA/ActividadesColegios/IAIcon.png';
 import IATutorial from 'resources/img/IA/ActividadesColegios/tutorial.png';
-import {ActivityValidation} from '../scripts/ActIA1';
+import {ActivityValidation} from '../../scripts/ActIA1';
 
 function ActIA1() {
   return (

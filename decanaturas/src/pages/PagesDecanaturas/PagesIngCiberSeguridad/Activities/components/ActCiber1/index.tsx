@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import BackgroundCard from 'core/components/Activities/BackgroundCard/components/BackgroundCard';
 import {Navigation} from 'services/scripts/Navigation';
-import {AnswerValidation} from '../scripts/ActCiber1';
+import {AnswerValidation} from '../../scripts/ActCiber1';
 
 function ActCiber1() {
   return (

@@ -1,0 +1,84 @@
+.materials img:hover {
+    width: 25%;
+    height: 25%;
+}
+
+.lock-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 80%;
+}
+
+#error-message {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.activity-description {
+    border-radius: 5px;
+    border: 1px solid #000000;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px;
+    margin: 15px 0 15px 0;
+}
+
+.lock-section {
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+}
+
+.activity-description h3 {
+    margin: 17px 21px 0 21px;
+}
+
+.activity-title {
+    text-align: center;
+}
+
+.activity-title h1{
+    font-size: 1.5rem;
+}
+
+.activity-title h2{
+    font-size: 1.3rem;
+    margin-bottom: 0;
+}
+
+.materials {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.materials-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.materials-section a {
+    display: flex;
+    justify-content: center;;
+}
+
+.materials img {
+    width: 20%;
+    height: 20%;
+}
+
+.materials h4{
+    font-size: 1rem;
+    margin:0 0 0 0;
+}
