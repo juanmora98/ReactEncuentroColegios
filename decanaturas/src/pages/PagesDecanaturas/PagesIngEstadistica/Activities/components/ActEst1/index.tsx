@@ -4,6 +4,7 @@ import BackgroundCard from 'core/components/Activities/BackgroundCard/components
 import {AnswerValidation} from '../../scripts/ActEst1';
 import {Navigation} from 'services/scripts/Navigation';
 import '../../styles/ActEst1.css';
+import 'core/styles/activity.css';
 import 'core/components/Buttons/styles/buttons.css';
 import IconLupa from 'resources/img/Estadistica/IconLupa.png';
 import IconHelp from 'resources/img/Estadistica/IconHelp.png';
