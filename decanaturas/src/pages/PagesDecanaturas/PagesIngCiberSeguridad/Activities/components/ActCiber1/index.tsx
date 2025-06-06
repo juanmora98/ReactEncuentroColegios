@@ -23,6 +23,7 @@ function Index() {
 function ActivityController() {
   const navigate = Navigation();
   const paramaters = Parameters();
+  const cryptedPhase = CodeTransformation(paramaters.INCIBER_CODE);
 
   const handleValidation = () => {
     const isValid = AnswerValidation();
@@ -30,8 +31,6 @@ function ActivityController() {
       navigate('/');
     }
   };
-
-  const cryptedPhase = CodeTransformation(paramaters.INCIBER_CODE);
 
   return (
       <React.Fragment>
