@@ -9,7 +9,6 @@ import {Navigation} from 'services/scripts/Navigation';
 import BackgroundCard from 'core/components/Activities/BackgroundCard/components/BackgroundCard';
 import {Parameters} from 'core/scripts/Parameters';
 
-
 function Index() {
   const gamesInstance = new Games();
   const parameters = Parameters();
@@ -46,8 +45,6 @@ function GamesController(props) {
         </p>
         <h4 className="Title-Center">Actividades completadas {count}</h4>
       </div>
-      
-        
         <Activities.GameSB gamesInstance={props.gamesInstance} onActivityComplete={handleActivityComplete} completed = {props.gamesInstance.getActivitiesCompleted(0)} parameters={props.parameters}/>
         <Activities.GameS gamesInstance={props.gamesInstance} onActivityComplete={handleActivityComplete} completed = {props.gamesInstance.getActivitiesCompleted(1)} parameters={props.parameters}/>
         <Activities.GameN gamesInstance={props.gamesInstance} onActivityComplete={handleActivityComplete} completed = {props.gamesInstance.getActivitiesCompleted(2)} parameters={props.parameters}/>
