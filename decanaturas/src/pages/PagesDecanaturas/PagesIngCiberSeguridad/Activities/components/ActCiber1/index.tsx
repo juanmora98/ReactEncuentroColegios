@@ -7,7 +7,7 @@ import {Navigation} from 'services/scripts/Navigation';
 import {Parameters} from 'core/scripts/Parameters';
 import {AnswerValidation, CodeTransformation} from '../../scripts/ActCiber1';
 
-function ActCiber1() {
+function Index() {
   return (
     <div className="Background">
       <NavBar ing="ciberseguridad" ingName="ingenieria de ciberseguridad" />
@@ -69,4 +69,4 @@ function ActivityController() {
   );
 }
 
-export default ActCiber1;
+export default Index;

@@ -18,7 +18,6 @@ marciano_hp = 50`;
       </p>
       <TextCodeArea value={code} onChange={setCode}/>
       <SpaceBattleDisplay />
-      <div id="resultado1" className="result-box"></div>
       <button className="custom-buttons" onClick={() => Attack(props)} disabled={props.completed}>Ejecutar Código</button>
     </section>
   );
@@ -39,9 +38,12 @@ function TextCodeArea({ value, onChange }) {
 
 function SpaceBattleDisplay () {
   return (
-    <div className="space-battle-display">
-      🚀 <span style={{ margin: '0 10px', fontWeight: 'bold' }}>VS</span> 👾
-    </div>
+    <react-fragment>
+      <div className="space-battle-display">
+      🚀 <span>VS</span> 👾
+      </div>
+      <div id="resultado1" className="result-box"></div>
+    </react-fragment>
   );
 }
 

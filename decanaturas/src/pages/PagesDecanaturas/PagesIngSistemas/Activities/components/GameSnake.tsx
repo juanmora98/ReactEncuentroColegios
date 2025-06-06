@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {moverCulebra, reiniciarCulebra} from '../scripts/GameSnake';
+import 'core/components/Buttons/styles/buttons.css';
 
 function GameSnake(props) {
 
-  const codeDefault = `Control de movimiento de la culebra
-move = [0, 0]  # [fila, columna]
-Prueba moverlo 1, 0 y luego 0,-1`;
+  const codeDefault = props.parameters.INGSIS_GAMESNAKEMESSAGE;
   const [code, setCode] = useState(codeDefault);
 
   useEffect(() => {
@@ -13,20 +12,34 @@ Prueba moverlo 1, 0 y luego 0,-1`;
   }, []);
 
   return (
-    <section className="activity">
-      <h2>Actividad 2: Juego de la Culebrita</h2>
-      <div className="code-visual-container">
-          <textarea id="code2" rows={3}
-          value={code}
-          spellCheck={false}
-          onChange={e => setCode(e.target.value)}/>
-          <div id="matrizJuego" className="matrix-display"></div>
-      </div>
-      <div id="tableroInicial" className="matrix-display"></div>
-        <button onClick={() => moverCulebra(props)} disabled={props.completed}>Mover Culebra</button>
-        <button onClick={reiniciarCulebra} disabled={props.completed}>Reiniciar</button>
-      <div id="resultado2" className="result-box"></div>
-    </section>
+    <React.Fragment>
+      <section className="activity-section">
+        <h3>Actividad 2: Juego de la Culebrita</h3>
+        <p>
+          Logra que la culebra se mueva por el tablero y coma las manzanas.
+        </p>
+        <TextCodeArea value={code} onChange={setCode}/>
+        <div id="matrizJuego" className="matrix-display"></div>
+        <div id="resultado2" className="result-box"></div>
+        <section className="activity-section-buttons">
+          <button className="custom-buttons" onClick={() => moverCulebra(props)} disabled={props.completed}>Mover Culebra</button>
+          <button className="custom-buttons" onClick={reiniciarCulebra} disabled={props.completed}>Reiniciar</button>
+        </section>
+      </section>
+    </React.Fragment>
+  );
+}
+
+function TextCodeArea({ value, onChange }) {
+  return (
+      <textarea
+      id="code2"
+      rows={3}
+      value={value}
+      spellCheck={false}
+      onChange={e => onChange(e.target.value)}
+      className="text-code-area"
+    />
   );
 }
 

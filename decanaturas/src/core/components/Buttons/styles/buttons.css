@@ -11,3 +11,11 @@
 .custom-buttons:hover {
     background-color: #218838;
 }
+
+.custom-buttons:disabled,
+.custom-buttons:disabled:hover {
+  background-color: #218838;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}

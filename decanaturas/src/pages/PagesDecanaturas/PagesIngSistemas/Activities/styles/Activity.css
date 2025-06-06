@@ -2,6 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 15px;
+}
+
+.activity-section-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.activity-section h3{
+    margin: 0;
 }
 
 .activity-section p {
@@ -17,7 +27,13 @@
 }
 
 .result-box {
-  margin-top: 10px;
-  font-weight: bold;
-  font-size: 1.1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    margin-block-end: 1em;
+}
+
+.result-box:empty {
+    display: none;
 }

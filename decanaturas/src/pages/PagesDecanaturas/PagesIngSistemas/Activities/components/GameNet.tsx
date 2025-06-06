@@ -15,7 +15,8 @@ servidorB = "192.168.1.10"`;
   }, []);
 
   return (
-    <section className="activity">
+    <React.Fragment>
+      <section className="activity">
       <h2>Actividad 3: Red de Computadoras y Servidores</h2>
       <div className="code-visual-container">
         <textarea id="code3" rows={7}
@@ -28,6 +29,7 @@ servidorB = "192.168.1.10"`;
       <button onClick={reiniciarRed} disabled={props.completed}>Reiniciar</button>
       <div id="resultado3" className="result-box"></div>
     </section>
+    </React.Fragment>
   );
 }
 
