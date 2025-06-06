@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ISISAct1 from 'pages/PagesDecanaturas/PagesIngSistemas/components/Index';
+import ISISAct1 from 'pages/PagesDecanaturas/PagesIngSistemas/Activities/Index';
 import IEST from 'pages/PagesDecanaturas/PagesIngEstadistica/components/Index';
 import IESTAct1 from 'pages/PagesDecanaturas/PagesIngEstadistica/Activities/components/ActEst1';
 import IAAct1 from 'pages/PagesDecanaturas/PagesIngIA/Activities/components/ActIA1';

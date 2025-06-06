@@ -40,23 +40,23 @@ function ActivityController() {
           <h2>¡Descifra el codigo secreto!</h2>
         </div>
         <div className="activity-description">
-            <p>
-              En ciberseguridad, es común encontrar códigos secretos que los piratas informáticos buscan aprovechar. Como parte del equipo, deberás descifrarlos para proteger la información y ayudar a las personas.
-            </p>
-            <h3>
-              CLAVE SECRETA
-            </h3>
-            <p>
-              <strong>
-                {cryptedPhase}
-              </strong>
-            </p>
-            <p><strong>Estas son las palabras clave que te ayudarán a encontrar la clave secreta:</strong></p>
-            <ul>
-                <li>gato -{'>'} {CodeTransformation("gato")}</li>
-                <li>Ágil y útil -{'>'} {CodeTransformation("Ágil y útil")}</li>
-                <li>Escuela Colombiana de Ingeniería -{'>'} {CodeTransformation("Escuela Colombiana de Ingeniería")}</li>
-            </ul>
+          <p>
+            En ciberseguridad, es común encontrar códigos secretos que los piratas informáticos buscan aprovechar. Como parte del equipo, deberás descifrarlos para proteger la información y ayudar a las personas.
+          </p>
+          <h3>
+            CLAVE SECRETA
+          </h3>
+          <p>
+            <strong>
+              {cryptedPhase}
+            </strong>
+          </p>
+          <p><strong>Estas son las palabras clave que te ayudarán a encontrar la clave secreta:</strong></p>
+          <ul>
+              <li>gato -{'>'} {CodeTransformation("gato")}</li>
+              <li>Ágil y útil -{'>'} {CodeTransformation("Ágil y útil")}</li>
+              <li>Escuela Colombiana de Ingeniería -{'>'} {CodeTransformation("Escuela Colombiana de Ingeniería")}</li>
+          </ul>
         </div>
         <div className="answer-section">
             <h3>Escribe la clave secreta para continuar</h3>
