@@ -3,6 +3,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from 'App.js';
 import Decanaturas from 'pages/PagesDecanaturas/components/index';
 import NotFound from 'core/components/NotFound/components/notFound';
+import CiberAct1 from 'pages/PagesDecanaturas/PagesIngCiberSeguridad/Activities/components/ActCiber1/index'
+import DecanaturaIEST from 'pages/PagesDecanaturas/PagesIngEstadistica/components/index'
+import IESTAct1 from 'pages/PagesDecanaturas/PagesIngEstadistica/Activities/components/ActEst1/index'
+import IAAct1 from 'pages/PagesDecanaturas/PagesIngIA/Activities/components/ActIA1/index'
+import ISISAct1 from 'pages/PagesDecanaturas/PagesIngSistemas/Activities/components/index'
 
 const basename = process.env.PUBLIC_URL || '/';
 

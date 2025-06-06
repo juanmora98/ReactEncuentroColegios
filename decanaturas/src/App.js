@@ -14,6 +14,15 @@ function App() {
       <button onClick={urlNavigation(parameters.INGSISTEMAS_ACTIVITY)}>
         Ir a Ingeniería de Sistemas
       </button>
+      <button onClick={urlNavigation(parameters.INGIA_ACTIVITY)}>
+        Ir a Ingeniería de IA
+      </button>
+      <button onClick={urlNavigation(parameters.INGESTADISTICA_ACTIVITY)}>
+        Ir a Ingeniería de Estadística
+      </button>
+      <button onClick={urlNavigation(parameters.INGCIBERSEGURIDAD_ACTIVITY)}>
+        Ir a Ingeniería de ciberseguridad
+      </button>
     </div>
   );
 }
