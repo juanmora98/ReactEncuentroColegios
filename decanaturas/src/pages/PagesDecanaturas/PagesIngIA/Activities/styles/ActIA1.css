@@ -1,11 +1,11 @@
 /* ... estilos anteriores ... */
 
 .image-link-section {
-    margin: 20px 0 40px 0;
+    margin: 20px 0 0 0;
 }
 
 .activity-image {
-    width: 400px;
+    width: 200px;
     max-width: 90%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -18,7 +18,7 @@
 }
 
 .tutorial-section {
-    margin: 40px 0 30px 0;
+    margin: 20px 0 30px 0;
     text-align: center;
 }
 
@@ -39,4 +39,15 @@
 .tutorial-image:hover {
     transform: scale(1.05);
     cursor: pointer;
+}
+
+.answer-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-section h3{
+    margin: 0;
 }

@@ -15,7 +15,7 @@ export function AppRoutes() {
     <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/ing-sistemas" element={<ISISAct1 />} />
+        <Route path="/ing-sistemas/actividad" element={<ISISAct1 />} />
         <Route path="/ing-estadistica" element={<IEST />} />
         <Route path="/ing-estadistica/actividad" element={<IESTAct1 />} />
         <Route path="/ing-IA/actividad" element={<IAAct1 />} />

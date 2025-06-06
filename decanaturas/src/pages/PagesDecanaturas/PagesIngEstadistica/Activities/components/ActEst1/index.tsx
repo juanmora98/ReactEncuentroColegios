@@ -43,14 +43,14 @@ function ActivityController() {
           <p>En la tabla siguiente encontrarás información como el color favorito, el deporte favorito, si les gusta leer, sus calificaciones y hábitos de estudio.<br />
           Analiza los datos con atención y responde correctamente para avanzar en la actividad.
           </p>
-          <div className="materials">
-            <div className="materials-section">
+          <div className="activity-materials">
+            <div className="material">
               <h4><strong>Tabla de datos.</strong></h4>
               <a href={`${process.env.PUBLIC_URL}/resources/excel/tabla_estudiantes.xlsx`} download>
                 <img src={IconLupa} alt="Descargar tabla de datos" />
               </a>
             </div>
-            <div className="materials-section">
+            <div className="material">
               <h4><strong>¿Necesitas ayuda?</strong></h4>
               <a href={`${process.env.PUBLIC_URL}/resources/pdf/explicacion_promedio_media_moda.pdf`} download>
                 <img src={IconHelp} alt="Descargar explicación PDF" />

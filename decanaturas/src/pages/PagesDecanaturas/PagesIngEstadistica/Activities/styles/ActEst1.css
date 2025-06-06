@@ -1,6 +1,6 @@
 .materials img:hover {
-    width: 25%;
-    height: 25%;
+    transform: scale(1.05);
+    cursor: pointer;
 }
 
 .lock-icon {
@@ -42,31 +42,40 @@ input[type="number"] {
     margin: 17px 21px 0 21px;
 }
 
-.materials {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+.activity-materials {
+  display: flex; /* Organiza las dos 'materials-section' en una fila */
+  justify-content: space-around; /* Espacia las secciones uniformemente */
+  align-items: flex-start; /* Alinea las secciones en la parte superior */
+  margin-top: 20px; /* Añade un poco de espacio arriba */
 }
 
-.materials-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.material {
+  display: flex;
+  flex-direction: column; /* Apila el título y la imagen verticalmente */
+  align-items: center; /* Centra el título y la imagen horizontalmente */
+  text-align: center; /* Centra el texto del h4 si es multilínea */
 }
 
-.materials-section a {
-    display: flex;
-    justify-content: center;;
+.material h4 {
+  margin-bottom: 10px; /* Espacio entre el título y la imagen */
 }
 
-.materials img {
-    width: 20%;
-    height: 20%;
+.material a {
+  display: inline-block; 
+  line-height: 0; 
 }
 
-.materials h4{
+.material a img {
+  display: block; 
+  max-width: 100px; /* Ajusta el tamaño máximo de la imagen si es necesario */
+  height: auto; 
+}
+
+.material a img:hover {
+    transform: scale(1.05);
+}
+
+.activity-materials h4{
     font-size: 1rem;
     margin:0 0 0 0;
 }
