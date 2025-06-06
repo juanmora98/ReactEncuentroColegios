@@ -1,6 +1,6 @@
 import './App.css';
 import {Parameters} from 'core/scripts/Parameters';
-import Index from 'pages/PagesDecanaturas/components/Index';
+import Index from 'pages/PagesDecanaturas/components/index';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import {NavigationOnClick} from 'services/scripts/Navigation';
 
