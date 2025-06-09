@@ -1,3 +1,34 @@
+.group-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid black;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.network-display-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid black;
+  width: 80%;
+}
+
+.computers-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+
 .activity textarea {
   width: 90%;
   max-width: 600px;
