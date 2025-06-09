@@ -192,3 +192,131 @@ export function inicializarRed() {
     cloudDiv.textContent = `🌐 Nube\n${nube.join(", ")}`;
     red.appendChild(cloudDiv);
 }
+
+// Función para parsear el contenido del área de texto y extraer la configuración de red
+export function parseNetworkConfig(codeText) {
+    try {
+        const config = {
+            grupoA: null,
+            grupoB: null,
+            servidorA: null,
+            servidorB: null,
+            nube: ["192.168.0.100", "192.168.1.100"], // IPs fijas de la nube
+            errors: []
+        };
+
+        // Extraer grupoA usando regex más robusta
+        const grupoAMatch = codeText.match(/grupoA\s*=\s*(\[[^\]]+\])/);
+        if (grupoAMatch) {
+            try {
+                config.grupoA = parseArrayString(grupoAMatch[1]);
+                // Validar que sea un array
+                if (!Array.isArray(config.grupoA)) {
+                    config.errors.push("grupoA debe ser un array");
+                }
+            } catch (e) {
+                config.errors.push("Error al parsear grupoA: sintaxis inválida");
+            }
+        } else {
+            config.errors.push("No se encontró la definición de grupoA");
+        }
+
+        // Extraer grupoB usando regex más robusta
+        const grupoBMatch = codeText.match(/grupoB\s*=\s*(\[[^\]]+\])/);
+        if (grupoBMatch) {
+            try {
+                config.grupoB = parseArrayString(grupoBMatch[1]);
+                // Validar que sea un array
+                if (!Array.isArray(config.grupoB)) {
+                    config.errors.push("grupoB debe ser un array");
+                }
+            } catch (e) {
+                config.errors.push("Error al parsear grupoB: sintaxis inválida");
+            }
+        } else {
+            config.errors.push("No se encontró la definición de grupoB");
+        }
+
+        // Extraer servidorA
+        const servidorAMatch = codeText.match(/servidorA\s*=\s*["']([^"']+)["']/);
+        if (servidorAMatch) {
+            config.servidorA = servidorAMatch[1];
+            // Validar formato IP básico
+            if (!isValidIPFormat(config.servidorA)) {
+                config.errors.push("servidorA tiene un formato de IP inválido");
+            }
+        } else {
+            config.errors.push("No se encontró la definición de servidorA");
+        }
+
+        // Extraer servidorB
+        const servidorBMatch = codeText.match(/servidorB\s*=\s*["']([^"']+)["']/);
+        if (servidorBMatch) {
+            config.servidorB = servidorBMatch[1];
+            // Validar formato IP básico
+            if (!isValidIPFormat(config.servidorB)) {
+                config.errors.push("servidorB tiene un formato de IP inválido");
+            }
+        } else {
+            config.errors.push("No se encontró la definición de servidorB");
+        }
+
+        return config;
+
+    } catch (error) {
+        return {
+            grupoA: null,
+            grupoB: null,
+            servidorA: null,
+            servidorB: null,
+            nube: ["192.168.0.100", "192.168.1.100"],
+            errors: [`Error general al parsear el código: ${error.message}`]
+        };
+    }
+}
+
+// Función segura para parsear arrays de strings sin usar eval
+function parseArrayString(arrayString) {
+    // Remover corchetes y dividir por comas
+    const cleanString = arrayString.replace(/[[\]]/g, '').trim();
+    
+    if (cleanString === '') {
+        return [];
+    }
+    
+    // Dividir por comas y limpiar cada elemento
+    const elements = cleanString.split(',').map(element => {
+        // Remover espacios y comillas
+        const cleaned = element.trim().replace(/^["']|["']$/g, '');
+        return cleaned === '' ? '' : cleaned;
+    });
+    
+    return elements;
+}
+
+// Función auxiliar para validar formato básico de IP
+function isValidIPFormat(ip) {
+    if (!ip || typeof ip !== 'string') return false;
+    
+    const ipPattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const match = ip.match(ipPattern);
+    
+    if (!match) return false;
+    
+    // Validar que cada octeto esté entre 0 y 255
+    for (let i = 1; i <= 4; i++) {
+        const octeto = parseInt(match[i]);
+        if (octeto < 0 || octeto > 255) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+// Función de prueba para demostrar el uso de parseNetworkConfig
+export function testParseNetworkConfig(props) {
+    const result = parseNetworkConfig(props);
+    console.log("Resultado del parseo:", result);
+    return result;
+}

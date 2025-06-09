@@ -17,7 +17,9 @@
   padding: 20px;
   border-radius: 5px;
   border: 1px solid black;
-  width: 80%;
+  width: 100% !important;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .computers-container {
@@ -97,4 +99,11 @@
   font-weight: bold;
   color: blue;
 }
-  
+
+.network-element-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  width: 50%;
+}
