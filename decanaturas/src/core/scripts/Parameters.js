@@ -8,6 +8,16 @@ export function Parameters() {
         INCIBER_CODE: "La ciberseguridad no es solo tecnología, sino también personas. Tenga cuidado con los piratas informáticos.",
         INGSIS_GAMESNAKEMESSAGE:`Control de movimiento de la culebra
 move = [0, 0]  # [movimientos en la fila, movimientos en la columna]
-Prueba moverlo 1, 0 y luego 0,-1`
+Prueba moverlo 1, 0 y luego 0,-1`,
+        INGSIS_GAMENETNETWORKJSON:{
+            groups: [
+                { id: "A", computers: ["", "", "", "", ""] },
+                { id: "B", computers: ["", "", "", "", ""] }
+            ],
+            servers: [
+                { id: "A", ip: ""},
+                { id: "B", ip: ""}
+            ]
+        } 
     };
 }

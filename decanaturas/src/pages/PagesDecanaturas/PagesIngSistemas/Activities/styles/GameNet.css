@@ -6,11 +6,15 @@
   border-radius: 5px;
   border: 1px solid black;
   width: 100%;
-  margin-bottom: 20px;
+}
+
+.group-container h4 {
+  margin-block-start: 0.8em;
+  margin-block-end: 0.8em;
 }
 
 .network-display-container {
-  margin-top: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,12 +26,29 @@
   margin: 0 auto;
 }
 
+.network-display-container-svg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .computers-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: space-evenly;
+}
+
+.computer-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 

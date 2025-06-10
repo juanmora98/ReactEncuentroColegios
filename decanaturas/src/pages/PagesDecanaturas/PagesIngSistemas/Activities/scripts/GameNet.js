@@ -1,3 +1,7 @@
+import {Parameters} from "core/scripts/Parameters.js"
+
+const parameters = Parameters();
+
 export function conectarRed(props) {
     const code = document.getElementById("code3").value;
 
@@ -195,84 +199,20 @@ export function inicializarRed() {
 
 // Función para parsear el contenido del área de texto y extraer la configuración de red
 export function parseNetworkConfig(codeText) {
-    try {
-        const config = {
-            grupoA: null,
-            grupoB: null,
-            servidorA: null,
-            servidorB: null,
-            nube: ["192.168.0.100", "192.168.1.100"], // IPs fijas de la nube
-            errors: []
-        };
-
-        // Extraer grupoA usando regex más robusta
-        const grupoAMatch = codeText.match(/grupoA\s*=\s*(\[[^\]]+\])/);
-        if (grupoAMatch) {
-            try {
-                config.grupoA = parseArrayString(grupoAMatch[1]);
-                // Validar que sea un array
-                if (!Array.isArray(config.grupoA)) {
-                    config.errors.push("grupoA debe ser un array");
-                }
-            } catch (e) {
-                config.errors.push("Error al parsear grupoA: sintaxis inválida");
-            }
-        } else {
-            config.errors.push("No se encontró la definición de grupoA");
-        }
-
-        // Extraer grupoB usando regex más robusta
-        const grupoBMatch = codeText.match(/grupoB\s*=\s*(\[[^\]]+\])/);
-        if (grupoBMatch) {
-            try {
-                config.grupoB = parseArrayString(grupoBMatch[1]);
-                // Validar que sea un array
-                if (!Array.isArray(config.grupoB)) {
-                    config.errors.push("grupoB debe ser un array");
-                }
-            } catch (e) {
-                config.errors.push("Error al parsear grupoB: sintaxis inválida");
-            }
-        } else {
-            config.errors.push("No se encontró la definición de grupoB");
-        }
-
-        // Extraer servidorA
-        const servidorAMatch = codeText.match(/servidorA\s*=\s*["']([^"']+)["']/);
-        if (servidorAMatch) {
-            config.servidorA = servidorAMatch[1];
-            // Validar formato IP básico
-            if (!isValidIPFormat(config.servidorA)) {
-                config.errors.push("servidorA tiene un formato de IP inválido");
-            }
-        } else {
-            config.errors.push("No se encontró la definición de servidorA");
-        }
-
-        // Extraer servidorB
-        const servidorBMatch = codeText.match(/servidorB\s*=\s*["']([^"']+)["']/);
-        if (servidorBMatch) {
-            config.servidorB = servidorBMatch[1];
-            // Validar formato IP básico
-            if (!isValidIPFormat(config.servidorB)) {
-                config.errors.push("servidorB tiene un formato de IP inválido");
-            }
-        } else {
-            config.errors.push("No se encontró la definición de servidorB");
-        }
-
-        return config;
-
-    } catch (error) {
-        return {
-            grupoA: null,
-            grupoB: null,
-            servidorA: null,
-            servidorB: null,
-            nube: ["192.168.0.100", "192.168.1.100"],
-            errors: [`Error general al parsear el código: ${error.message}`]
-        };
-    }
+    const config = parameters.INGSIS_GAMENETNETWORKJSON;
+    // Extraer grupoA usando regex más robusta
+    const grupoAMatch = codeText.match(/grupoA\s*=\s*(\[[^\]]+\])/);
+    config.groups[0].computers = parseArrayString(grupoAMatch[1]);
+    // Extraer grupoB usando regex más robusta
+    const grupoBMatch = codeText.match(/grupoB\s*=\s*(\[[^\]]+\])/);
+    config.groups[1].computers = parseArrayString(grupoBMatch[1]);
+    // Extraer servidorA
+    const servidorAMatch = codeText.match(/servidorA\s*=\s*["']([^"']+)["']/);
+        config.servers[0].ip = servidorAMatch[1];
+    // Extraer servidorB
+    const servidorBMatch = codeText.match(/servidorB\s*=\s*["']([^"']+)["']/);
+    config.servers[1].ip = servidorBMatch[1];
+    return config;
 }
 
 // Función segura para parsear arrays de strings sin usar eval
@@ -314,9 +254,193 @@ function isValidIPFormat(ip) {
     return true;
 }
 
-// Función de prueba para demostrar el uso de parseNetworkConfig
-export function testParseNetworkConfig(props) {
-    const result = parseNetworkConfig(props);
-    console.log("Resultado del parseo:", result);
-    return result;
+// Función para validar y establecer conexión entre computador y servidor
+export function connectComputerToServer(computerRef, serverRef, connectionType = 'bottom') {
+    if (!computerRef || !serverRef) {
+        console.error('Referencias de computador o servidor no válidas');
+        return {
+            conectado: false,
+            error: 'Referencias no válidas'
+        };
+    }
+
+    try {
+        // Obtener IPs de ambos componentes
+        const computerIP = computerRef.getIP();
+        const serverIP = serverRef.getIP();
+
+        console.log(`Intentando conectar computador ${computerIP} con servidor ${serverIP}`);
+
+        // Validar formato de IPs
+        if (!isValidIPFormat(computerIP) || !isValidIPFormat(serverIP)) {
+            return {
+                conectado: false,
+                error: 'Formato de IP inválido',
+                computerIP,
+                serverIP
+            };
+        }
+
+        // Dividir IPs en octetos
+        const computerOctets = computerIP.split('.');
+        const serverOctets = serverIP.split('.');
+
+        // Validar que los primeros 3 octetos sean iguales
+        const primerosOctetosIguales = 
+            computerOctets[0] === serverOctets[0] &&
+            computerOctets[1] === serverOctets[1] &&
+            computerOctets[2] === serverOctets[2];
+
+        // Validar que el último octeto del computador sea menor que el del servidor
+        const ultimoOctetoMenor = parseInt(computerOctets[3]) < parseInt(serverOctets[3]);        if (primerosOctetosIguales && ultimoOctetoMenor) {
+            // ✅ CONEXIÓN VÁLIDA
+            console.log(`✅ Conexión válida entre ${computerIP} y ${serverIP} (connectionType: ${connectionType})`);
+
+            // Establecer estado de conexión en el computador
+            computerRef.setConnectionStatus(true);
+            computerRef.setConnectedIPs([serverIP]);
+
+            // Obtener el punto de conexión específico del servidor
+            let targetConnectionPoint;
+            if (connectionType === 'top') {
+                targetConnectionPoint = serverRef.getTopConnectionPoint();
+            } else {
+                targetConnectionPoint = serverRef.getBottomConnectionPoint();
+            }
+
+            if (targetConnectionPoint) {
+                // Agregar la IP del computador a la lista de IPs conectadas del punto específico
+                const connectedIPs = targetConnectionPoint.getConnectedIPs();
+                if (!connectedIPs.includes(computerIP)) {
+                    targetConnectionPoint.addConnectedIP(computerIP);
+                }
+                
+                // Marcar el punto de conexión específico como conectado
+                targetConnectionPoint.setConnectionStatus(true);
+            } else {
+                console.warn(`No se pudo obtener el punto de conexión ${connectionType} del servidor`);
+            }
+
+            return {
+                conectado: true,
+                computerIP,
+                serverIP,
+                connectionType,
+                mensaje: `Computador ${computerIP} conectado exitosamente al servidor ${serverIP}`
+            };
+
+        } else {
+            // ❌ CONEXIÓN INVÁLIDA
+            let razonError = [];
+            
+            if (!primerosOctetosIguales) {
+                razonError.push('Los primeros 3 octetos deben ser iguales');
+            }
+            
+            if (!ultimoOctetoMenor) {
+                razonError.push(`El último octeto del computador (${computerOctets[3]}) debe ser menor que el del servidor (${serverOctets[3]})`);
+            }
+
+            console.log(`❌ Conexión inválida: ${razonError.join(', ')}`);
+
+            // Asegurar que ambos componentes marquen como desconectados
+            computerRef.setConnectionStatus(false);
+            computerRef.setConnectedIPs([]);
+
+            // Remover la IP del computador del servidor si estaba conectada
+            const serverConnectedIPs = serverRef.getConnectedIPs();
+            if (serverConnectedIPs.includes(computerIP)) {
+                serverRef.removeConnectedIP(computerIP);
+            }
+
+            return {
+                conectado: false,
+                computerIP,
+                serverIP,
+                error: razonError.join(', '),
+                mensaje: `No se puede conectar ${computerIP} al servidor ${serverIP}: ${razonError.join(', ')}`
+            };
+        }
+
+    } catch (error) {
+        console.error('Error durante la validación de conexión:', error);
+        return {
+            conectado: false,
+            error: `Error interno: ${error.message}`
+        };
+    }
 }
+
+// Función para desconectar un computador de un servidor
+export function disconnectComputerFromServer(computerRef, serverRef, connectionType = 'bottom') {
+    if (!computerRef || !serverRef) {
+        console.error('Referencias de computador o servidor no válidas');
+        return false;
+    }
+
+    try {
+        const computerIP = computerRef.getIP();
+        
+        console.log(`Desconectando computador ${computerIP} del servidor (connectionType: ${connectionType})`);
+
+        // Desconectar el computador
+        computerRef.setConnectionStatus(false);
+        computerRef.setConnectedIPs([]);
+
+        // Obtener el punto de conexión específico del servidor
+        let targetConnectionPoint;
+        if (connectionType === 'top') {
+            targetConnectionPoint = serverRef.getTopConnectionPoint();
+        } else {
+            targetConnectionPoint = serverRef.getBottomConnectionPoint();
+        }
+
+        if (targetConnectionPoint) {
+            // Remover la IP del computador del punto de conexión específico
+            targetConnectionPoint.removeConnectedIP(computerIP);
+
+            // Si el punto de conexión no tiene más computadores conectados, marcarlo como desconectado
+            const remainingConnections = targetConnectionPoint.getConnectedIPs();
+            if (remainingConnections.length === 0) {
+                targetConnectionPoint.setConnectionStatus(false);
+            }        } else {
+            console.warn(`No se pudo obtener el punto de conexión ${connectionType} del servidor`);
+        }
+
+        console.log(`✅ Computador ${computerIP} desconectado del servidor`);
+        return true;
+
+    } catch (error) {
+        console.error('Error durante la desconexión:', error);
+        return false;
+    }
+}
+
+// Función para validar múltiples conexiones en lote
+export function validateConnectionsBatch(connections) {
+    const resultados = [];
+    
+    connections.forEach((conexion, index) => {
+        const { computerRef, serverRef, connectionType } = conexion;
+        console.log(`Validando conexión ${index + 1}/${connections.length}`);
+        
+        const resultado = connectComputerToServer(computerRef, serverRef, connectionType);
+        resultados.push({
+            indice: index,
+            ...resultado
+        });
+    });
+
+    const exitosas = resultados.filter(r => r.conectado).length;
+    const fallidas = resultados.filter(r => !r.conectado).length;
+
+    console.log(`📊 Resumen de conexiones: ${exitosas} exitosas, ${fallidas} fallidas`);
+    
+    return {
+        total: connections.length,
+        exitosas,
+        fallidas,
+        resultados
+    };
+}
+

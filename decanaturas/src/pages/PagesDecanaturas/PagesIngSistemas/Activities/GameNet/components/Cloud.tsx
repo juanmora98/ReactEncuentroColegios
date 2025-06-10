@@ -1,31 +1,52 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle } from 'react';
 import "../styles/styles.css";
+import ConnectionPoint, { ConnectionPointRef } from './ConnectionPoint';
 
 interface CloudProps {
     topConnected?: boolean;
     bottomConnected?: boolean;
+    topIP?: string;
+    bottomIP?: string;
 }
 
-const Cloud = forwardRef<HTMLDivElement, CloudProps>(({ topConnected = false, bottomConnected = false }, ref) => {
+export interface CloudRef {
+    getTopConnectionPoint: () => ConnectionPointRef | null;
+    getBottomConnectionPoint: () => ConnectionPointRef | null;
+}
+
+const Cloud = forwardRef<CloudRef, CloudProps>(({ 
+    topConnected = false, 
+    bottomConnected = false, 
+    topIP = "192.168.0.100", 
+    bottomIP = "192.168.1.100" 
+}, ref) => {
+    const topPointRef = useRef<ConnectionPointRef>(null);
+    const bottomPointRef = useRef<ConnectionPointRef>(null);
+    const cloudRef = useRef<HTMLDivElement>(null);
+
+    useImperativeHandle(ref, () => ({
+        getTopConnectionPoint: () => topPointRef.current,
+        getBottomConnectionPoint: () => bottomPointRef.current,
+    }));
+
     return (
-        <div className="cloud" ref={ref} style={{ position: 'relative', display: 'inline-block' }}>
-            ☁️
-            {/* Punto de conexión superior para servidores que se conectan a la nube */}
-            <div 
-                className="connection-point-top"
-                style={{
-                    backgroundColor: topConnected ? '#00aa00' : '#ff4444'
-                }}
-                data-testid="cloud-connection-point-top"
-            ></div>
+        <div className="cloud" ref={cloudRef}>
+            ☁️            {/* Punto de conexión superior para servidores que se conectan a la nube */}
+            <ConnectionPoint
+                ref={topPointRef}
+                id="cloud-top"
+                initialIP={topIP}
+                position="top"
+                isConnected={topConnected}
+            />
             {/* Punto de conexión inferior para servidores que se conectan a la nube */}
-            <div 
-                className="connection-point-bottom"
-                style={{
-                    backgroundColor: bottomConnected ? '#00aa00' : '#ff4444'
-                }}
-                data-testid="cloud-connection-point-bottom"
-            ></div>
+            <ConnectionPoint
+                ref={bottomPointRef}
+                id="cloud-bottom"
+                initialIP={bottomIP}
+                position="bottom"
+                isConnected={bottomConnected}
+            />
         </div>
     );
 });

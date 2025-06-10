@@ -1,20 +1,28 @@
 import React, {useEffect, useState, useRef, useLayoutEffect } from 'react';
+import {Parameters} from "core/scripts/Parameters.js"
 import '../styles/GameNet.css';
-import { testParseNetworkConfig, reiniciarRed, inicializarRed } from '../scripts/GameNet.js';
+import { reiniciarRed, parseNetworkConfig } from '../scripts/GameNet.js';
 import "../GameNet/components/Computer";
 import Computer from '../GameNet/components/Computer';
 import Server from '../GameNet/components/Server';
 import Cloud from '../GameNet/components/Cloud';
 
-function GameNet(props) {  const codeDefault = `Asigna IPs para conectar computadoras a sus servidores
+const parameters = Parameters();
+
+function GameNet(props) {
+  const codeDefault = `Asigna IPs para conectar computadoras a sus servidores
 y conecta servidores a la nube
 grupoA = ["192.168.0.1", "192.168.0.2", "", "", ""]
 grupoB = ["", "192.168.1.2", "192.168.1.3", "", ""]
 servidorA = "192.168.0.100"
 servidorB = "192.168.1.10"`;
   const [code, setCode] = useState(codeDefault);
+  const [networkConfig, setNetworkConfig] = useState(getNetworkConfiguration());
+
   useEffect(() => {
-    inicializarRed();
+    console.log("GameNet component mounted");
+    setNetworkConfig(initializeNetwork(networkConfig, code));
+    console.log("GameNet component final");
   }, []);
 
   return (
@@ -27,30 +35,36 @@ servidorB = "192.168.1.10"`;
           para que todos los computadores puedan acceder a la nube.
         </p>
         <TextCodeArea value={code} onChange={setCode}/>
-        <NetDisplay />
+        <NetDisplay networkConfig={networkConfig}/>
       </section>
-      <section className="activity">
-      <div className="code-visual-container">
-        <div id="redVisual" className="network-display"></div>
-      </div>
-      <button onClick={() => testParseNetworkConfig(code)} disabled={props.completed}>Ejecutar Código</button>
+    <button onClick={() => parseNetworkConfig(code)} disabled={props.completed}>Ejecutar Código</button>
       <button onClick={reiniciarRed} disabled={props.completed}>Reiniciar</button>
       <div id="resultado3" className="result-box"></div>
-    </section>
     </React.Fragment>
   );
+}
+
+//inicializador de la red
+function initializeNetwork(networkConfig, code) {
+  // Parsear el código ingresado por el usuario
+  const parsedConfig = parseNetworkConfig(code);
+  // Si el parseo falla, retornar la configuración inicial
+  if (!parsedConfig) {
+    return networkConfig;
+  }
+  return parsedConfig;
 }
 
 // Función para obtener la configuración inicial de la red
 export function getNetworkConfiguration() {
   return {
     groups: [
-      { id: "A", computers: ["192.168.0.1", "192.168.0.2", "", "", ""] },
-      { id: "B", computers: ["", "192.168.1.2", "192.168.1.3", "", ""] }
+      { id: "A", computers: ["", "", "", "", ""] },
+      { id: "B", computers: ["", "", "", "", ""] }
     ],
     servers: [
-      { id: "A", ip: "192.168.0.100", hasCloudConnection: true },
-      { id: "B", ip: "192.168.1.10", hasCloudConnection: false }
+      { id: "A", ip: ""},
+      { id: "B", ip: ""}
     ],
     defaultConnectionColor: '#0074D9',
     connectionColors: [
@@ -61,6 +75,11 @@ export function getNetworkConfiguration() {
     ]
   };
 }
+
+
+
+
+
 
 // Función para determinar el estado de conexión de los elementos
 export function getConnectionStatus(groups, servers) {
@@ -80,22 +99,19 @@ export function getConnectionStatus(groups, servers) {
   };
 }
 
-function NetDisplay () {
+function NetDisplay (props) {
   const containerRef = useRef(null);
   const computerRefs = useRef([]);
-  const serverRefs = useRef([]);  const cloudRef = useRef(null); // Referencia para la nube
+  const serverRefs = useRef([]);  
+  const cloudRef = useRef(null); // Referencia para la nube
   const [forceLineUpdate, setForceLineUpdate] = useState(0); // Estado para forzar actualización de líneas
     // Obtener configuración de la red
-  const { groups, servers, defaultConnectionColor, connectionColors } = getNetworkConfiguration();
-  const [connectionColor, setConnectionColor] = useState(defaultConnectionColor);
+  const { groups, servers } = props.networkConfig;
+  const [connectionColor] = useState("#0074D9"); // Color de conexión por defecto
   
   // Obtener estado de conexiones
   const connectionStatus = getConnectionStatus(groups, servers);
 
-  // Función para cambiar el color de las líneas
-  const changeConnectionColor = (newColor) => {
-    setConnectionColor(newColor);
-  };
   // Forzar recálculo de las líneas después del renderizado inicial
   useLayoutEffect(() => {
     const forceUpdate = () => {
@@ -116,40 +132,12 @@ function NetDisplay () {
       clearTimeout(timer3);
     };
   }, []);
-
   return (
     <React.Fragment>
       <div 
-        ref={containerRef}
         className="network-display-container" 
-        style={{ 
-          position: 'relative', 
-          minHeight: '500px', 
-          border: '1px solid #ccc', 
-          padding: '20px',
-          width: '100%',
-          maxWidth: '900px',
-          margin: '0 auto'
-        }}
-      >        {/* Botones para cambiar color */}
-        <div style={{ marginBottom: '10px' }}>
-          {connectionColors.map((colorConfig, index) => (
-            <button 
-              key={index}
-              onClick={() => changeConnectionColor(colorConfig.color)} 
-              style={{ 
-                marginRight: index < connectionColors.length - 1 ? '5px' : '0px', 
-                backgroundColor: colorConfig.color, 
-                color: 'white' 
-              }}
-            >
-              {colorConfig.name}
-            </button>
-          ))}
-        </div>
-        
-        {/* Estructura dinámica: Grupo A -> Servidor A -> Nube -> Servidor B -> Grupo B */}
-          {/* Grupo A */}
+        ref={containerRef}
+      >
         <div className="network-element-container">
           <GenerateGroup 
               idGroup="A"
@@ -158,7 +146,7 @@ function NetDisplay () {
               groupIndex={0}
               connectionPosition="bottom"
           />
-        </div>        {/* Servidor A */}
+        </div>
         <div className="network-element-container">
           <Generateserver 
             idGroup="A" 
@@ -167,14 +155,15 @@ function NetDisplay () {
             topConnected={connectionStatus.serverA.topConnected}
             bottomConnected={connectionStatus.serverA.bottomConnected}
           />
-        </div>        {/* Nube (representación visual) - Centrada */}
-        <div className="network-element-container">
+        </div>        <div className="network-element-container">
           <Cloud 
             ref={cloudRef}
             topConnected={connectionStatus.cloud.topConnected}
             bottomConnected={connectionStatus.cloud.bottomConnected}
+            topIP="192.168.0.100"
+            bottomIP="192.168.1.100"
           />
-        </div>        {/* Servidor B */}
+        </div>
         <div className="network-element-container">
           <Generateserver 
             idGroup="B" 
@@ -183,7 +172,7 @@ function NetDisplay () {
             topConnected={connectionStatus.serverB.topConnected}
             bottomConnected={connectionStatus.serverB.bottomConnected}
           />
-        </div>{/* Grupo B */}
+        </div>
         <div className="network-element-container">
           <GenerateGroup 
               idGroup="B" 
@@ -192,41 +181,16 @@ function NetDisplay () {
               groupIndex={1}
               connectionPosition="top"
           />
-        </div>
-        {/* SVG para las líneas de conexión */}
-        <svg
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            pointerEvents: 'none',
-            zIndex: 1
-          }}
-        >          {/* Dibujar líneas desde cada computador con IP al servidor correspondiente */}
-          {groups.map((group, groupIndex) => 
-            group.computers.map((ip, computerIndex) => {
-              if (ip && computerRefs.current[groupIndex] && computerRefs.current[groupIndex][computerIndex] && 
-                  serverRefs.current[groupIndex]) {
-                return (                  <ConnectionLine
-                    key={`connection-${groupIndex}-${computerIndex}`}
-                    startRef={{ current: computerRefs.current[groupIndex][computerIndex] }}
-                    endRef={{ current: serverRefs.current[groupIndex] }}
-                    containerRef={containerRef}
-                    color={connectionColor}
-                    strokeWidth={3}
-                    connectionType={groupIndex === 0 ? 'computer-to-server-A' : 'computer-to-server-B'}
-                    forceUpdate={forceLineUpdate}
-                  />
-                );
-              }
-              return null;
-            })
-          )}{/* Dibujar líneas desde cada servidor a la nube */}
+        </div>        {/* SVG para las líneas de conexión */}
+        <svg className="network-display-container-svg">      
+          {/* Dibujar líneas válidas entre computadoras y servidores */}
+          {generateValidConnections(computerRefs, serverRefs, groups, servers, containerRef, connectionColor, forceLineUpdate)}
+          
+          {/* Dibujar líneas desde cada servidor a la nube */}
           {servers.map((server, serverIndex) => {
-            if (server.hasCloudConnection && serverRefs.current[serverIndex] && cloudRef.current) {
-              return (                <ConnectionLine
+            if (serverRefs.current[serverIndex] && cloudRef.current) {
+              return (
+                <ConnectionLine
                   key={`server-cloud-${serverIndex}`}
                   startRef={{ current: serverRefs.current[serverIndex] }}
                   endRef={cloudRef}
@@ -251,21 +215,24 @@ function GenerateGroup(props){
   if (!props.computerRefs.current[props.groupIndex]) {
     props.computerRefs.current[props.groupIndex] = [];
   }
-
+  console.log(`CODIGO DE PROPS IMPORTANTE`, {props});
   return (
     <React.Fragment>
       <div className="group-container">
         <h4>GRUPO {props.idGroup}</h4>
-        <div className="computers-container">
+        <div className="computers-container">          
           {props.computers.map((ip, computerIndex) => (
+            console.log(`IP de computadora: ${ip}`),
             <div 
               key={computerIndex}
+              className="computer-container"
               ref={el => props.computerRefs.current[props.groupIndex][computerIndex] = el}
             >
-              <Computer 
-                connectionPosition={props.connectionPosition || 'bottom'}
-                isConnected={!!ip}
+              <Computer
+                id={`computer-${props.idGroup}-${computerIndex}`}
                 ip={ip}
+                connectionPosition={props.connectionPosition || 'bottom'}
+                connectedToServer ={false}
               />
             </div>
           ))}
@@ -276,17 +243,22 @@ function GenerateGroup(props){
 }
 
 function Generateserver(props){
+  // Obtener la IP del servidor según el grupo
+  const { servers } = getNetworkConfiguration();
+  const serverIP = servers[props.serverIndex]?.ip || `192.168.${props.serverIndex}.100`;
+
   return (
     <React.Fragment>
       <div className="group-container">
         <h4>SERVIDOR {props.idGroup}</h4>
         <div 
           className="server-container"
-          ref={el => props.serverRef.current[props.serverIndex] = el}
-        >
+          ref={el => props.serverRef.current[props.serverIndex] = el}        >
           <Server 
             topConnected={props.topConnected || false}
             bottomConnected={props.bottomConnected || false}
+            topIP={serverIP}
+            bottomIP={serverIP}
           />
         </div>
       </div>
@@ -322,48 +294,63 @@ interface ConnectionLineProps {
 // Componente para dibujar una línea de conexión entre dos elementos
 function ConnectionLine({ startRef, endRef, containerRef, color = '#0074D9', strokeWidth = 2, connectionType, forceUpdate }: ConnectionLineProps) {
   const [coordinates, setCoordinates] = useState(null);
+  
   useLayoutEffect(() => {
     const calculateCoordinates = () => {
+      console.log(`🎯 ConnectionLine calculating coordinates:`, {
+        connectionType,
+        hasStartRef: !!startRef?.current,
+        hasEndRef: !!endRef?.current,
+        hasContainerRef: !!containerRef?.current,
+        startRefType: startRef?.current ? typeof startRef.current : 'undefined'
+      });
+
       if (startRef?.current && endRef?.current && containerRef?.current) {
-        // Buscar los puntos de conexión específicos dentro de los elementos
         let startConnectionPoint;
         let endConnectionPoint;
         
-        // Determinar puntos de conexión según el tipo de conexión
+        // Lógica para elementos DOM completos (computadoras, servidores y nube)
         if (connectionType === 'computer-to-server-A') {
-          // Computador del grupo A al punto superior del servidor A
-          startConnectionPoint = startRef.current.querySelector('[data-testid="computer-connection-point"]');
-          endConnectionPoint = endRef.current.querySelector('[data-testid="server-connection-point-top"]');
+          startConnectionPoint = startRef.current.querySelector('[data-testid="connection-point-computer-bottom"]');
+          endConnectionPoint = endRef.current.querySelector('[data-testid="connection-point-server-top"]');
         } else if (connectionType === 'computer-to-server-B') {
-          // Computador del grupo B al punto inferior del servidor B
-          startConnectionPoint = startRef.current.querySelector('[data-testid="computer-connection-point"]');
-          endConnectionPoint = endRef.current.querySelector('[data-testid="server-connection-point-bottom"]');
+          startConnectionPoint = startRef.current.querySelector('[data-testid="connection-point-computer-top"]');
+          endConnectionPoint = endRef.current.querySelector('[data-testid="connection-point-server-bottom"]');
         } else if (connectionType === 'server-to-cloud-top') {
-          // Servidor A (punto inferior) a la nube (punto superior)
-          startConnectionPoint = startRef.current.querySelector('[data-testid="server-connection-point-bottom"]');
-          endConnectionPoint = endRef.current.querySelector('[data-testid="cloud-connection-point-top"]');
+          startConnectionPoint = startRef.current.querySelector('[data-testid="connection-point-server-bottom"]');
+          // Para la nube, usar el método del imperative handle
+          const cloudTopPoint = endRef.current.getTopConnectionPoint();
+          endConnectionPoint = cloudTopPoint ? cloudTopPoint.getElement() : null;
         } else if (connectionType === 'server-to-cloud-bottom') {
-          // Servidor B (punto superior) a la nube (punto inferior)
-          startConnectionPoint = startRef.current.querySelector('[data-testid="server-connection-point-top"]');
-          endConnectionPoint = endRef.current.querySelector('[data-testid="cloud-connection-point-bottom"]');
+          startConnectionPoint = startRef.current.querySelector('[data-testid="connection-point-server-top"]');
+          // Para la nube, usar el método del imperative handle
+          const cloudBottomPoint = endRef.current.getBottomConnectionPoint();
+          endConnectionPoint = cloudBottomPoint ? cloudBottomPoint.getElement() : null;
         } else {
-          // Conexiones por defecto (retrocompatibilidad)
-          startConnectionPoint = startRef.current.querySelector('[data-testid="computer-connection-point"]') ||
-                                startRef.current.querySelector('[data-testid="server-connection-point-top"]') ||
-                                startRef.current.querySelector('[data-testid="server-connection-point"]');
-          endConnectionPoint = endRef.current.querySelector('[data-testid="server-connection-point-top"]') ||
-                             endRef.current.querySelector('[data-testid="server-connection-point"]') ||
-                             endRef.current.querySelector('[data-testid="cloud-connection-point-top"]') ||
-                             endRef.current.querySelector('[data-testid="cloud-connection-point-bottom"]');
+          // Conexiones por defecto
+          startConnectionPoint = startRef.current.querySelector('[data-testid="connection-point-computer-bottom"]') ||
+                                startRef.current.querySelector('[data-testid="connection-point-computer-top"]') ||
+                                startRef.current.querySelector('[data-testid="connection-point-server-top"]') ||
+                                startRef.current.querySelector('[data-testid="connection-point-server-bottom"]');
+          // Para endRef, verificar si es una nube o un servidor
+          if (endRef.current.getTopConnectionPoint && endRef.current.getBottomConnectionPoint) {
+            // Es una nube
+            const cloudTopPoint = endRef.current.getTopConnectionPoint();
+            const cloudBottomPoint = endRef.current.getBottomConnectionPoint();
+            endConnectionPoint = (cloudTopPoint ? cloudTopPoint.getElement() : null) ||
+                               (cloudBottomPoint ? cloudBottomPoint.getElement() : null);
+          } else {
+            // Es un servidor u otro elemento
+            endConnectionPoint = endRef.current.querySelector('[data-testid="connection-point-server-top"]') ||
+                               endRef.current.querySelector('[data-testid="connection-point-server-bottom"]');
+          }
         }
         
         if (startConnectionPoint && endConnectionPoint) {
-          // Obtener las posiciones de los elementos
           const containerRect = containerRef.current.getBoundingClientRect();
           const startRect = startConnectionPoint.getBoundingClientRect();
           const endRect = endConnectionPoint.getBoundingClientRect();
 
-          // Calcular coordenadas relativas al contenedor
           const startX = startRect.left - containerRect.left + startRect.width / 2;
           const startY = startRect.top - containerRect.top + startRect.height / 2;
           const endX = endRect.left - containerRect.left + endRect.width / 2;
@@ -379,14 +366,11 @@ function ConnectionLine({ startRef, endRef, containerRef, color = '#0074D9', str
       }
     };
 
-    // Calcular inmediatamente
     calculateCoordinates();
-
-    // También calcular después de un pequeño delay para elementos que puedan tardar en renderizar
     const timer = setTimeout(calculateCoordinates, 10);
     
     return () => clearTimeout(timer);
-    }, [startRef, endRef, containerRef, connectionType, forceUpdate]);
+  }, [startRef, endRef, containerRef, connectionType, forceUpdate]);
 
   if (!coordinates) return null;
 
@@ -401,6 +385,103 @@ function ConnectionLine({ startRef, endRef, containerRef, color = '#0074D9', str
       strokeDasharray="5,5" // Línea punteada para mejor visualización
     />
   );
+}
+
+// Función para validar si una IP tiene formato válido
+function isValidIPFormat(ip) {
+  if (!ip || typeof ip !== 'string') return false;
+  const parts = ip.split('.');
+  if (parts.length !== 4) return false;
+  return parts.every(part => {
+    const num = parseInt(part);
+    return !isNaN(num) && num >= 0 && num <= 255;
+  });
+}
+
+// Función para validar conexión entre computadora y servidor
+function validateComputerServerConnection(computerIP, serverIP) {
+  if (!isValidIPFormat(computerIP) || !isValidIPFormat(serverIP)) {
+    return false;
+  }
+
+  const computerOctets = computerIP.split('.');
+  const serverOctets = serverIP.split('.');
+
+  // Validar que los primeros 3 octetos sean iguales
+  const primerosOctetosIguales = 
+    computerOctets[0] === serverOctets[0] &&
+    computerOctets[1] === serverOctets[1] &&
+    computerOctets[2] === serverOctets[2];
+
+  // Validar que el último octeto del computador sea menor que el del servidor
+  const ultimoOctetoMenor = parseInt(computerOctets[3]) < parseInt(serverOctets[3]);
+
+  return primerosOctetosIguales && ultimoOctetoMenor;
+}
+
+// Función para generar líneas de conexión válidas entre computadoras y servidores
+function generateValidConnections(computerRefs, serverRefs, groups, servers, containerRef, connectionColor, forceLineUpdate) {
+  const validConnections = [];
+
+  console.log('🔍 Debugging generateValidConnections:');
+  console.log('computerRefs:', computerRefs.current);
+  console.log('serverRefs:', serverRefs.current);
+  console.log('groups:', groups);
+  console.log('servers:', servers);
+  groups.forEach((group, groupIndex) => {
+    group.computers.forEach((ip, computerIndex) => {
+      // Solo procesar computadoras con IP válida y con referencia DOM
+      if (!ip || !computerRefs.current[groupIndex] || !computerRefs.current[groupIndex][computerIndex]) {
+        console.log(`❌ Skipping computer ${groupIndex}-${computerIndex}: no IP or ref`);
+        return;
+      }
+
+      const computerElement = computerRefs.current[groupIndex][computerIndex];
+      
+      console.log(`🖥️ Computer ${groupIndex}-${computerIndex}:`, {
+        originalIP: ip,
+        hasElement: !!computerElement
+      });
+
+      // Buscar servidores válidos para esta computadora
+      servers.forEach((server, serverIndex) => {
+        if (!serverRefs.current[serverIndex]) {
+          console.log(`❌ No server ref for ${serverIndex}`);
+          return;
+        }
+
+        const serverIP = server.ip;
+        
+        console.log(`🔗 Checking connection: ${ip} → ${serverIP}`);
+        
+        // Validar si la computadora puede conectarse al servidor
+        if (validateComputerServerConnection(ip, serverIP)) {
+          console.log(`✅ Valid connection: ${ip} → ${serverIP}`);
+          
+          // Determinar el tipo de conexión basado en la red
+          const connectionType = groupIndex === 0 ? 'computer-to-server-A' : 'computer-to-server-B';
+          
+          validConnections.push(
+            <ConnectionLine
+              key={`valid-connection-${groupIndex}-${computerIndex}-${serverIndex}`}
+              startRef={{ current: computerElement }}
+              endRef={{ current: serverRefs.current[serverIndex] }}
+              containerRef={containerRef}
+              color={connectionColor}
+              strokeWidth={3}
+              connectionType={connectionType}
+              forceUpdate={forceLineUpdate}
+            />
+          );
+        } else {
+          console.log(`❌ Invalid connection: ${ip} → ${serverIP}`);
+        }
+      });
+    });
+  });
+
+  console.log(`📊 Total valid connections: ${validConnections.length}`);
+  return validConnections;
 }
 
 export default GameNet;
