@@ -255,10 +255,14 @@ function Generateserver(props){
           className="server-container"
           ref={el => props.serverRef.current[props.serverIndex] = el}        >
           <Server 
-            topConnected={props.topConnected || false}
-            bottomConnected={props.bottomConnected || false}
-            topIP={serverIP}
-            bottomIP={serverIP}
+            id={`server-${props.idGroup}`}
+            computerConnected={props.topConnected || false}
+            cloudConnected={props.bottomConnected || false}
+            ipComputer={props.topConnected}
+            ipCloud={props.bottomConnected}
+            InitialIP={serverIP}
+            connectionPositionCloud={props.serverIndex === 0 ? 'top' : 'bottom'}
+            connectionPositionComputer={props.serverIndex === 0 ? 'bottom' : 'top'}
           />
         </div>
       </div>

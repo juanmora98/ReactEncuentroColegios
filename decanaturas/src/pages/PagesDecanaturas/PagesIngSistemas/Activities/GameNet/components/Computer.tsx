@@ -1,6 +1,7 @@
 import React, { useRef, forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import "../styles/styles.css";
 import ConnectionPoint, { ConnectionPointRef } from './ConnectionPoint';
+import { isConnected } from '../scripts/GameController';
 
 interface ComputerProps {
     id: string;
@@ -89,17 +90,6 @@ const Computer = forwardRef<ComputerRef, ComputerProps>(({
         </React.Fragment>
     );
 });
-
-function isConnected(currentIP, currentConnectedToServer) {
-    var connected = 0;
-    if(currentIP){
-        connected = 2;
-        if(currentConnectedToServer){
-            connected = 1;
-        }
-    }
-    return connected;
-}
 
 Computer.displayName = 'Computer';
 
