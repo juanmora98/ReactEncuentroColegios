@@ -12,11 +12,11 @@ function Server(props) {
                 </div>
                 <ConnectionPoint
                     position="top"
-                    connected={false}
+                    connected={isConnected(props.ip, props.topConnected)}
                 />
                 <ConnectionPoint
                     position="bottom"
-                    connected={false}
+                    connected={isConnected(props.ip, props.bottomConnected)}
                 />
             </div>
         </React.Fragment>

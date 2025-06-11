@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Parameters} from "core/scripts/Parameters.js"
 import '../styles/GameNet.css';
-import { validationIpComputerServer, parseNetworkConfig, initializeNetworkconfig } from '../scripts/GameNet.js';
+import { validationIpComputerServer, parseNetworkConfig, initializeNetworkconfig, validationIpServerCloud } from '../scripts/GameNet.js';
 import "../GameNet/components/Computer";
 import Computer from '../GameNet/components/Computer';
 import Server from '../GameNet/components/Server';
@@ -43,8 +43,7 @@ servidorB = "192.168.1.10"`;
 }
 
 function updateNetworkConfig(newConfig, oldConfig, setConfiguration) {
-  const parsedConfig = parseNetworkConfig(newConfig);
-  console.log("Parsed Network Configuration:", parsedConfig);
+  const parsedConfig = parseNetworkConfig(newConfig, oldConfig);
   setConfiguration(parsedConfig);
 }
 
@@ -58,14 +57,26 @@ function NetDisplay (props) {
           <GenerateGroup 
               idGroup={props.networkConfig.groups[0].id}
               computers = {props.networkConfig.groups[0].computers}
-              server = {props.networkConfig.servers[0].ip}
+              server = {props.networkConfig.servers[0]}
+          />
+        </div>
+        <div className="network-element-container">
+          <Generateserver 
+            serverConfig ={props.networkConfig.servers[0]}
+            cloudIp = {props.networkConfig.cloud[0].ip}
+          />
+        </div>
+        <div className="network-element-container">
+          <Generateserver 
+            serverConfig ={props.networkConfig.servers[1]}
+            cloudIp = {props.networkConfig.cloud[1].ip}
           />
         </div>
         <div className="network-element-container">
           <GenerateGroup 
               idGroup={props.networkConfig.groups[1].id}
               computers = {props.networkConfig.groups[1].computers}
-              server = {props.networkConfig.servers[1].ip}
+              server = {props.networkConfig.servers[1]}
           />
         </div>
         {/*
@@ -149,7 +160,7 @@ function GenerateGroup(props){
                   key={`computer-component-${props.idGroup}-${computerIndex}-${computer.ip || 'empty'}`}
                   ip = {computer.ip}
                   connectionPosition={ConnectionPointPosition(props.idGroup)}
-                  connectedToServer ={validationIpComputerServer(computer.ip, props.server)}
+                  connectedToServer ={makeConnectionComputerServer(computer.ip, props.server)}
                 />
               </div>
             );
@@ -158,6 +169,15 @@ function GenerateGroup(props){
       </div>
     </React.Fragment>
   );
+}
+
+function makeConnectionComputerServer(computerIp, server) {
+  const connected = validationIpComputerServer(computerIp, server);
+  server.computerConnected = false;
+  if(connected){
+    server.computerConnected = true;
+  }
+  return connected;
 }
 
 function ConnectionPointPosition(props){
@@ -178,6 +198,37 @@ function TextCodeArea({ value, onChange }) {
       onChange={e => onChange(e.target.value)}
       className="text-code-area"
     />
+  );
+}
+
+function Generateserver(props){
+  return (
+    <React.Fragment>
+      <div className="group-container">
+        <h4>SERVIDOR {props.serverConfig.id}</h4>
+        <div className="server-container">
+          <Server
+            ip={props.serverConfig.ip}
+            topConnected={(() => {
+              if (props.serverConfig.id === "A") {
+                return props.serverConfig.computerConnected;
+              } else {
+                return validationIpServerCloud(props.serverConfig.ip, props.cloudIp);
+              }
+            })()}
+            bottomConnected={(() => {
+              if (props.serverConfig.id === "B") {
+                return props.serverConfig.computerConnected;
+              } else {
+                return validationIpServerCloud(props.serverConfig.ip, props.cloudIp);
+              }
+            })()}
+            computerConnected={props.computerConnected}
+            cloudConnected={validationIpServerCloud(props.serverConfig.ip, props.cloudIp)}
+          />
+        </div>
+      </div>
+    </React.Fragment>
   );
 }
 {/*}

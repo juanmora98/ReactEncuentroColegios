@@ -33,9 +33,28 @@ Prueba moverlo 1, 0 y luego 0,-1`,
                 }
             ],
             servers: [
-                { id: "A", ip: ""},
-                { id: "B", ip: ""}
+                { 
+                    id: "A",
+                    ip: "",
+                    computerConnected: false,
+                    cloudConnected: false
+                },
+                { 
+                    id: "B",
+                    ip: "",
+                    computerConnected: false,
+                    cloudConnected: false
+                }
+            ],
+            cloud:[
+                {
+                    ip: "192.168.0.100"
+                },
+                {
+                    ip:"192.168.1.100"
+                }
             ]
+
         } 
     };
 }
