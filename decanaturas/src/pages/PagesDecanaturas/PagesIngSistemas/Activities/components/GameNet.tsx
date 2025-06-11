@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef, useLayoutEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Parameters} from "core/scripts/Parameters.js"
 import '../styles/GameNet.css';
-import { reiniciarRed, parseNetworkConfig } from '../scripts/GameNet.js';
+import { validationIpComputerServer, parseNetworkConfig, initializeNetworkconfig } from '../scripts/GameNet.js';
 import "../GameNet/components/Computer";
 import Computer from '../GameNet/components/Computer';
 import Server from '../GameNet/components/Server';
@@ -17,14 +17,13 @@ grupoB = ["", "192.168.1.2", "192.168.1.3", "", ""]
 servidorA = "192.168.0.100"
 servidorB = "192.168.1.10"`;
   const [code, setCode] = useState(codeDefault);
-  const [networkConfig, setNetworkConfig] = useState(getNetworkConfiguration());
-
+  const [networkConfig, setNetworkConfig] = useState(parameters.INGSIS_GAMENETNETWORKJSON);
   useEffect(() => {
-    console.log("GameNet component mounted");
-    setNetworkConfig(initializeNetwork(networkConfig, code));
-    console.log("GameNet component final");
-  }, []);
-
+    // Solo inicializar la configuración una vez al cargar el componente
+    const initialConfig = initializeNetworkconfig(codeDefault);
+    setNetworkConfig(initialConfig);
+    console.log("Initial configuration loaded:", initialConfig);
+  }, []); // Array vacío para que solo se ejecute una vez
   return (
     <React.Fragment>
       <section className="activity-section">
@@ -37,116 +36,40 @@ servidorB = "192.168.1.10"`;
         <TextCodeArea value={code} onChange={setCode}/>
         <NetDisplay networkConfig={networkConfig}/>
       </section>
-    <button onClick={() => parseNetworkConfig(code)} disabled={props.completed}>Ejecutar Código</button>
-      <button onClick={reiniciarRed} disabled={props.completed}>Reiniciar</button>
+    <button onClick={() => updateNetworkConfig(code, networkConfig, setNetworkConfig)} disabled={props.completed}>Ejecutar Código</button>
+      <button  disabled={props.completed}>Reiniciar</button>
       <div id="resultado3" className="result-box"></div>
     </React.Fragment>
   );
 }
 
-//inicializador de la red
-function initializeNetwork(networkConfig, code) {
-  // Parsear el código ingresado por el usuario
-  const parsedConfig = parseNetworkConfig(code);
-  // Si el parseo falla, retornar la configuración inicial
-  if (!parsedConfig) {
-    return networkConfig;
-  }
-  return parsedConfig;
-}
-
-// Función para obtener la configuración inicial de la red
-export function getNetworkConfiguration() {
-  return {
-    groups: [
-      { id: "A", computers: ["", "", "", "", ""] },
-      { id: "B", computers: ["", "", "", "", ""] }
-    ],
-    servers: [
-      { id: "A", ip: ""},
-      { id: "B", ip: ""}
-    ],
-    defaultConnectionColor: '#0074D9',
-    connectionColors: [
-      { name: 'Azul', color: '#0074D9' },
-      { name: 'Rojo', color: '#ff4444' },
-      { name: 'Verde', color: '#00aa00' },
-      { name: 'Naranja', color: '#ffaa00' }
-    ]
-  };
-}
-
-
-
-
-
-
-// Función para determinar el estado de conexión de los elementos
-export function getConnectionStatus(groups, servers) {
-  return {
-    serverA: {
-      topConnected: groups[0].computers.some(ip => ip !== ""),
-      bottomConnected: servers[0].hasCloudConnection && servers[0].ip === "192.168.0.100"
-    },
-    serverB: {
-      topConnected: servers[1].hasCloudConnection && servers[1].ip === "192.168.1.100",
-      bottomConnected: groups[1].computers.some(ip => ip !== "")
-    },
-    cloud: {
-      topConnected: servers[0].hasCloudConnection && servers[0].ip === "192.168.0.100",
-      bottomConnected: servers[1].hasCloudConnection && servers[1].ip === "192.168.1.100"
-    }
-  };
+function updateNetworkConfig(newConfig, oldConfig, setConfiguration) {
+  const newNetwork = parseNetworkConfig(newConfig, oldConfig);
+  setConfiguration(newNetwork);
 }
 
 function NetDisplay (props) {
-  const containerRef = useRef(null);
-  const computerRefs = useRef([]);
-  const serverRefs = useRef([]);  
-  const cloudRef = useRef(null); // Referencia para la nube
-  const [forceLineUpdate, setForceLineUpdate] = useState(0); // Estado para forzar actualización de líneas
-    // Obtener configuración de la red
-  const { groups, servers } = props.networkConfig;
-  const [connectionColor] = useState("#0074D9"); // Color de conexión por defecto
-  
-  // Obtener estado de conexiones
-  const connectionStatus = getConnectionStatus(groups, servers);
-
-  // Forzar recálculo de las líneas después del renderizado inicial
-  useLayoutEffect(() => {
-    const forceUpdate = () => {
-      setForceLineUpdate(prev => prev + 1);
-    };
-
-    // Forzar actualización inmediata
-    forceUpdate();
-
-    // También forzar después de un pequeño delay para asegurar que todos los elementos están renderizados
-    const timer1 = setTimeout(forceUpdate, 50);
-    const timer2 = setTimeout(forceUpdate, 150);
-    const timer3 = setTimeout(forceUpdate, 300);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-    };
-  }, []);
-  return (
+  console.log("Network Configuration:", props);
+    return (
     <React.Fragment>
       <div 
         className="network-display-container" 
-        ref={containerRef}
       >
         <div className="network-element-container">
           <GenerateGroup 
-              idGroup="A"
-              computers={groups[0].computers}
-              computerRefs={computerRefs}
-              groupIndex={0}
-              connectionPosition="bottom"
+              idGroup={props.networkConfig.groups[0].id}
+              computers = {props.networkConfig.groups[0].computers}
+              server = {props.networkConfig.servers[0].ip}
           />
         </div>
+        <div className="network-element-container">
+          <GenerateGroup 
+              idGroup={props.networkConfig.groups[1].id}
+              computers = {props.networkConfig.groups[1].computers}
+              server = {props.networkConfig.servers[1].ip}
+          />
+        </div>
+        {/*
         <div className="network-element-container">
           <Generateserver 
             idGroup="A" 
@@ -180,13 +103,14 @@ function NetDisplay (props) {
               computerRefs={computerRefs}
               groupIndex={1}
               connectionPosition="top"
-          />
-        </div>        {/* SVG para las líneas de conexión */}
+          />        </div>        
+        {/* TODO: Sección comentada para desarrollo - SVG y líneas de conexión */}
+        {/* 
         <svg className="network-display-container-svg">      
-          {/* Dibujar líneas válidas entre computadoras y servidores */}
+          // Dibujar líneas válidas entre computadoras y servidores
           {generateValidConnections(computerRefs, serverRefs, groups, servers, containerRef, connectionColor, forceLineUpdate)}
           
-          {/* Dibujar líneas desde cada servidor a la nube */}
+          // Dibujar líneas desde cada servidor a la nube
           {servers.map((server, serverIndex) => {
             if (serverRefs.current[serverIndex] && cloudRef.current) {
               return (
@@ -205,43 +129,59 @@ function NetDisplay (props) {
             return null;
           })}
         </svg>
+        */}
       </div>
     </React.Fragment>
   );
 }
 
 function GenerateGroup(props){
-  // Inicializar el array de refs para este grupo si no existe
-  if (!props.computerRefs.current[props.groupIndex]) {
-    props.computerRefs.current[props.groupIndex] = [];
-  }
-  console.log(`CODIGO DE PROPS IMPORTANTE`, {props});
   return (
     <React.Fragment>
       <div className="group-container">
         <h4>GRUPO {props.idGroup}</h4>
         <div className="computers-container">          
-          {props.computers.map((ip, computerIndex) => (
-            console.log(`IP de computadora: ${ip}`),
-            <div 
-              key={computerIndex}
-              className="computer-container"
-              ref={el => props.computerRefs.current[props.groupIndex][computerIndex] = el}
-            >
-              <Computer
-                id={`computer-${props.idGroup}-${computerIndex}`}
-                ip={ip}
-                connectionPosition={props.connectionPosition || 'bottom'}
-                connectedToServer ={false}
-              />
-            </div>
-          ))}
+          {props.computers.map((computer, computerIndex) => {
+            return (
+              <div 
+                key={`computer-group-${props.idGroup}-${computerIndex}`}
+              >
+                <Computer
+                  key={`computer-component-${props.idGroup}-${computerIndex}-${computer.ip || 'empty'}`}
+                  ip = {computer.ip}
+                  connectionPosition={ConnectionPointPosition(props.idGroup)}
+                  connectedToServer ={validationIpComputerServer(computer.ip, props.server)}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </React.Fragment>
   );
 }
 
+function ConnectionPointPosition(props){
+  var position = "top";
+  if (props === "A") {
+    position = "bottom";
+  }
+  return position;
+}
+
+function TextCodeArea({ value, onChange }) {
+  return (
+      <textarea
+      id="code3"
+      rows={3}
+      value={value}
+      spellCheck={false}
+      onChange={e => onChange(e.target.value)}
+      className="text-code-area"
+    />
+  );
+}
+{/*}
 function Generateserver(props){
   // Obtener la IP del servidor según el grupo
   const { servers } = getNetworkConfiguration();
@@ -270,18 +210,7 @@ function Generateserver(props){
   );
 }
 
-function TextCodeArea({ value, onChange }) {
-  return (
-      <textarea
-      id="code3"
-      rows={3}
-      value={value}
-      spellCheck={false}
-      onChange={e => onChange(e.target.value)}
-      className="text-code-area"
-    />
-  );
-}
+
 
 // Interfaz para las props del componente ConnectionLine
 interface ConnectionLineProps {
@@ -487,5 +416,5 @@ function generateValidConnections(computerRefs, serverRefs, groups, servers, con
   console.log(`📊 Total valid connections: ${validConnections.length}`);
   return validConnections;
 }
-
+*/}
 export default GameNet;

@@ -1,8 +1,8 @@
-export function isConnected(currentIP, currentConnectedToServer) {
+export function isConnected(ip, isConnected) {
     var connected = 0;
-    if(currentIP){
+    if(ip !== ""){
         connected = 2;
-        if(currentConnectedToServer){
+        if(isConnected){
             connected = 1;
         }
     }

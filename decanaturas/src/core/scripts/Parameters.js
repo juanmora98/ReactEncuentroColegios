@@ -11,8 +11,26 @@ move = [0, 0]  # [movimientos en la fila, movimientos en la columna]
 Prueba moverlo 1, 0 y luego 0,-1`,
         INGSIS_GAMENETNETWORKJSON:{
             groups: [
-                { id: "A", computers: ["", "", "", "", ""] },
-                { id: "B", computers: ["", "", "", "", ""] }
+                { 
+                    id: "A", 
+                    computers: [
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false }
+                    ]
+                },
+                { 
+                    id: "B", 
+                    computers: [
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false },
+                    { ip: "", isConnected: false }
+                    ]
+                }
             ],
             servers: [
                 { id: "A", ip: ""},
