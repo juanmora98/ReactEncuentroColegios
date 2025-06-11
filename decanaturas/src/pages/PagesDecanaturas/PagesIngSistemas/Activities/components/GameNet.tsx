@@ -22,7 +22,6 @@ servidorB = "192.168.1.10"`;
     // Solo inicializar la configuración una vez al cargar el componente
     const initialConfig = initializeNetworkconfig(codeDefault);
     setNetworkConfig(initialConfig);
-    console.log("Initial configuration loaded:", initialConfig);
   }, []); // Array vacío para que solo se ejecute una vez
   return (
     <React.Fragment>
@@ -44,12 +43,12 @@ servidorB = "192.168.1.10"`;
 }
 
 function updateNetworkConfig(newConfig, oldConfig, setConfiguration) {
-  const newNetwork = parseNetworkConfig(newConfig, oldConfig);
-  setConfiguration(newNetwork);
+  const parsedConfig = parseNetworkConfig(newConfig);
+  console.log("Parsed Network Configuration:", parsedConfig);
+  setConfiguration(parsedConfig);
 }
 
 function NetDisplay (props) {
-  console.log("Network Configuration:", props);
     return (
     <React.Fragment>
       <div 

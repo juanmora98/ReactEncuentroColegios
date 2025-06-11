@@ -9,13 +9,11 @@ export function validationIpComputerServer(computerIp, serverIp){
     computerIpList.forEach((num, index) => {
         if (num !== serverIpList[index]) {
             if(index === computerIpList.length - 1 && num < serverIpList[index]){
+                console.log("Validating connection between computer IP: " + computerIp + " and server IP: " + serverIp);
                 isConnected = true;
             }
         }
     });
-    console.log("Computer IP: ", computerIpList);
-    console.log("Server IP: ", serverIpList);
-    console.log("Is Connected: ", isConnected);
     return isConnected;
 }
 
@@ -37,38 +35,35 @@ function stringToIntegerList(inputString) {
     
 
 
-export function parseNetworkConfig(newConfig, oldConfig) {
-    var config = oldConfig;
-    // Extraer grupoA usando regex más robusta
+export function parseNetworkConfig(newConfig) {
+    var config = JSON.parse(JSON.stringify(parameters.INGSIS_GAMENETNETWORKJSON));
     const grupoAMatch = newConfig.match(/grupoA\s*=\s*(\[[^\]]+\])/);
     const grupoAIPs = parseArrayString(grupoAMatch[1]);
-    // Convertir strings a objetos con ip e isConnected
-    config.groups[0].computers = grupoAIPs.map((ip,index) => ({
-        ip: ip,
-        isConnected: oldConfig.groups[0].computers[index].isConnected
-    }));
-    // Extraer grupoB usando regex más robusta
     const grupoBMatch = newConfig.match(/grupoB\s*=\s*(\[[^\]]+\])/);
     const grupoBIPs = parseArrayString(grupoBMatch[1]);
-    // Convertir strings a objetos con ip e isConnected
-    config.groups[1].computers = grupoBIPs.map((ip,index) => ({
-        ip: ip,
-        isConnected: oldConfig.groups[1].computers[index].isConnected
-    }));
-    
-    // Extraer servidorA
     const servidorAMatch = newConfig.match(/servidorA\s*=\s*["']([^"']+)["']/);
-    config.servers[0].ip = servidorAMatch[1];
-    
-    // Extraer servidorB
     const servidorBMatch = newConfig.match(/servidorB\s*=\s*["']([^"']+)["']/);
-    config.servers[1].ip = servidorBMatch[1];
-    
+    const servidorAIPs =parseArrayString(servidorAMatch[1]);
+    const servidorBIPs =parseArrayString(servidorBMatch[1]);
+    console.log(grupoAIPs);
+    config.groups[0].computers = grupoAIPs.map((ipN) => ({
+        ip: ipN,
+        isConnected: validationIpComputerServer(ipN, servidorAIPs[0])
+    }));
+    console.log(config.groups[0].computers);
+    config.groups[1].computers = grupoBIPs.map((ip) => ({
+        ip: ip,
+        isConnected: validationIpComputerServer(ip, servidorBIPs[0])
+    }));
+    // Extraer servidorA
+    config.servers[0].ip = servidorAIPs[0];
+    // Extraer servidorB
+    config.servers[1].ip = servidorBIPs[0];
     return config;
 }
 
 export function initializeNetworkconfig(code){
-    var config = parameters.INGSIS_GAMENETNETWORKJSON;
+    const config = JSON.parse(JSON.stringify(parameters.INGSIS_GAMENETNETWORKJSON));
      const grupoAMatch = code.match(/grupoA\s*=\s*(\[[^\]]+\])/);
     const grupoAIPs = parseArrayString(grupoAMatch[1]);
     // Convertir strings a objetos con ip e isConnected
