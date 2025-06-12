@@ -273,7 +273,7 @@ function generateConnectionLinesWithRefs(networkConfig, containerRef, groupARefs
                     ConnectionPointPosition(networkConfig.groups[1].id) === "bottom" 
                     ? computerRect.height : 0); // Si es bottom, punto abajo; si es top, punto arriba
         const x2 = serverRect.left - containerRect.left + serverRect.width / 2;
-        const y2 = serverRect.top - containerRect.top + serverRect.height / 2;
+        const y2 = (serverRect.top - containerRect.top + serverRect.height / 2)+30;
         
         lines.push(
           <line
