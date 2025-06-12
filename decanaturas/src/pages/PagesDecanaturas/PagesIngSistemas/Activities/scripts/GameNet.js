@@ -2,6 +2,15 @@ import {Parameters} from "core/scripts/Parameters.js"
 
 const parameters = Parameters();
 
+export function ValidationConnected(computer) {
+    var isConnected = false;
+    if (computer.isConnected) {
+        isConnected = true;
+
+    }
+    return isConnected
+}
+
 export function validationIpServerCloud(serverIp, cloudIp){
     var isConnected = true;
     var cloudIpList = stringToIntegerList(cloudIp);
@@ -16,15 +25,17 @@ export function validationIpServerCloud(serverIp, cloudIp){
 
 export function validationIpComputerServer(computerIp, server){
     var isConnected = false;
-    var computerIpList = stringToIntegerList(computerIp);
-    var serverIpList = stringToIntegerList(server.ip);
-    computerIpList.forEach((num, index) => {
-        if (num !== serverIpList[index]) {
-            if(index === computerIpList.length - 1 && num < serverIpList[index]){
-                isConnected = true;
+    if(computerIp !== "" && server.ip !== ""){
+        var computerIpList = stringToIntegerList(computerIp);
+        var serverIpList = stringToIntegerList(server.ip);
+        computerIpList.forEach((num, index) => {
+            if (num !== serverIpList[index]) {
+                if(index === computerIpList.length - 1 && num < serverIpList[index]){
+                    isConnected = true;
+                }
             }
-        }
-    });
+        });
+    }
     return isConnected;
 }
 
@@ -49,16 +60,14 @@ export function parseNetworkConfig(newConfig, oldConfig) {
     const grupoAMatch = newConfig.match(/grupoA\s*=\s*(\[[^\]]+\])/);
     const grupoAIPs = parseArrayString(grupoAMatch[1]);
     const grupoBMatch = newConfig.match(/grupoB\s*=\s*(\[[^\]]+\])/);
-    const grupoBIPs = parseArrayString(grupoBMatch[1]);
-    //Si quiero que funcione asi tengo que volver la entrada una lista para que funcione bien si no no va a funcionar
-    const servidorAMatch = newConfig.match(/servidorA\s*=\s*["']([^"']+)["']/);
-    const servidorBMatch = newConfig.match(/servidorB\s*=\s*["']([^"']+)["']/);
-    const servidorAIPs =parseArrayString(servidorAMatch[1]);
-    const servidorBIPs =parseArrayString(servidorBMatch[1]);
-    // Extraer servidorA
-    config.servers[0].ip = servidorAIPs[0];
+    const grupoBIPs = parseArrayString(grupoBMatch[1]);    //Si quiero que funcione asi tengo que volver la entrada una lista para que funcione bien si no no va a funcionar
+    const servidorAMatch = newConfig.match(/servidorA\s*=\s*["']([^"']*)["']/);
+    const servidorBMatch = newConfig.match(/servidorB\s*=\s*["']([^"']*)["']/);
+    const servidorAIPs = servidorAMatch ? servidorAMatch[1] : "";
+    const servidorBIPs = servidorBMatch ? servidorBMatch[1] : "";
+    config.servers[0].ip = servidorAIPs;
     // Extraer servidorB
-    config.servers[1].ip = servidorBIPs[0];
+    config.servers[1].ip = servidorBIPs;
     config.groups[0].computers = grupoAIPs.map((ipN, index) => ({
         ip: ipN,
         isConnected: validationIpComputerServer(ipN, config.servers[0])
@@ -89,11 +98,11 @@ export function initializeNetworkconfig(code){
         isConnected: false
     }));
     // Extraer servidorA
-    const servidorAMatch = code.match(/servidorA\s*=\s*["']([^"']+)["']/);
-    config.servers[0].ip = servidorAMatch[1];
+    const servidorAMatch = code.match(/servidorA\s*=\s*["']([^"']*)["']/);
+    config.servers[0].ip = servidorAMatch ? servidorAMatch[1] : "";
     // Extraer servidorB
-    const servidorBMatch = code.match(/servidorB\s*=\s*["']([^"']+)["']/);
-    config.servers[1].ip = servidorBMatch[1];
+    const servidorBMatch = code.match(/servidorB\s*=\s*["']([^"']*)["']/);
+    config.servers[1].ip = servidorBMatch ? servidorBMatch[1] : "";
     return config;
 }
 

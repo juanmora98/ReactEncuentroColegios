@@ -1,7 +1,7 @@
-import React, { useRef, forwardRef, useImperativeHandle, useState, useEffect } from 'react';
+import React from 'react';
 import "../styles/styles.css";
 import ConnectionPoint from './ConnectionPoint';
-import { isConnected, refAsignation } from '../scripts/GameController';
+import { isConnected } from '../scripts/GameController';
 
 function Server(props) {
     return (

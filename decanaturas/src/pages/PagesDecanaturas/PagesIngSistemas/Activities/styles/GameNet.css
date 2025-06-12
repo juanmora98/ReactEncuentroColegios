@@ -36,6 +36,11 @@
   z-index: 1;
 }
 
+.network-element-container {
+  position: relative;
+  z-index: 2; /* Por encima del SVG */
+}
+
 .computers-container {
   display: flex;
   flex-direction: row;
