@@ -23,7 +23,7 @@ servidorB = ""`;
     // Solo inicializar la configuración una vez al cargar el componente
     const initialConfig = initializeNetworkconfig(codeDefault);
     setNetworkConfig(initialConfig);
-  }, []); // Array vacío para que solo se ejecute una vez
+  }, [codeDefault]);
   return (
     <React.Fragment>
       <section className="activity-section">

@@ -8,6 +8,7 @@ import DecanaturaIEST from 'pages/PagesDecanaturas/PagesIngEstadistica/component
 import IESTAct1 from 'pages/PagesDecanaturas/PagesIngEstadistica/Activities/components/ActEst1/index';
 import IAAct1 from 'pages/PagesDecanaturas/PagesIngIA/Activities/components/ActIA1/index';
 import ISISAct1 from 'pages/PagesDecanaturas/PagesIngSistemas/Activities/components/index';
+import ISISActivities from "pages/PagesDecanaturas/PagesIngSistemas/Activities/Colegios/components/index";
 
 const basename = process.env.PUBLIC_URL || '/';
 
@@ -22,6 +23,7 @@ export function AppRoutes() {
         <Route path="/ing-estadistica/actividad" element={<IESTAct1 />} />
         <Route path="/ing-IA/actividad" element={<IAAct1 />} />
         <Route path="/ing-CiberSeguridad/actividad" element={<CiberAct1 />} />
+        <Route path="/ing-sistemas/actividades" element={<ISISActivities />} />
         <Route path="*" element={<NotFound />} /> {/* Ruta 404 */}
       </Routes>
     </BrowserRouter>
