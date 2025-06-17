@@ -1,0 +1,40 @@
+.activity-title {
+    text-align: center;
+}
+
+.activity-title h1{
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.activity-title h2{
+    font-size: 1.3rem;
+    margin-bottom: 0;
+}
+
+.activity-description {
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 18px;
+    margin: 15px 0;
+    padding: 10px;
+    /* Removido text-align: center para no afectar complement */
+}
+
+.Title-Center {
+    text-align: center;
+    margin: 0 0 15px 0;
+}
+
+.Description-Center {
+    width: 80%;
+    margin: 0 auto; /* Centra el contenedor */
+    text-align: center; /* Centra los textos internos */
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.Description-Center p {
+    text-align: center; /* Asegura que los párrafos estén centrados */
+    margin-bottom: 1rem;
+}
