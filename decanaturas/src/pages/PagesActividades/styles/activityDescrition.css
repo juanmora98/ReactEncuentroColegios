@@ -18,7 +18,7 @@
     font-size: 18px;
     margin: 15px 0;
     padding: 10px;
-    /* Removido text-align: center para no afectar complement */
+    width: 90%;
 }
 
 .Title-Center {
