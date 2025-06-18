@@ -85,24 +85,6 @@ function InteractionContainer() {
                 }
             };
 
-            // Función para mover la nariz
-            const moveNose = () => {
-                if (nose) {
-                    nose.style.transform = 'rotate(10deg)';
-                    setTimeout(() => {
-                        nose.style.transform = 'rotate(0deg)';
-                    }, 300);
-                }
-            };
-            
-            if (mouth) {
-                mouth.addEventListener('click', changeMouth);
-            }
-            
-            if (nose) {
-                nose.addEventListener('mouseenter', moveNose);
-            }
-
         };
 
         // Ejecutar después de que el componente se monte
@@ -114,30 +96,12 @@ function InteractionContainer() {
             <div className="interaction-section">
                 <div className="face-demo">
                     <div id="interactive-face" className="interactive-face">
-                        <div className="face-row hair-row">
-                            <span className="hair">💇‍♂️</span>
+                        <div className= "eyes-container">
+                            <img src={getImage("ojos", "ojo1")} alt="ojo izquierdo" className="eye"/>
+                            <img src={getImage("ojos", "ojo1")} alt="ojo derecho" className="eye right-eye"/>
                         </div>
-                        
-                        <div className="face-row eyes-row">
-                            <span id="left-eye" className="eye left-eye">
-                                <img src={getImage("ojos", "ojo1")} alt="ojo izquierdo" />
-                            </span>
-                            <span className="space"></span>
-                            <span id="right-eye" className="eye right-eye">
-                                <img src={getImage("ojos", "ojo1")} alt="ojo derecho" />
-                            </span>
-                        </div>
-                        
-                        <div className="face-row nose-row">
-                            <span className="space"></span>
-                            <span id="nose" className="nose">👃</span>
-                            <span className="space"></span>
-                        </div>   
-                        <div className="face-row mouth-row">
-                            <span id="mouth" className="mouth">
-                                <img src={getImage("sonrisas", "sonrisa1")} alt="sonrisa" />
-                            </span>
-                        </div>
+                        <img src={getImage("narices", "nariz1")} alt="nariz" className="nose"/>
+                        <img src={getImage("sonrisas", "sonrisa1")} alt="sonrisa" className="mouth"/>
                     </div>
                 </div>
             </div>

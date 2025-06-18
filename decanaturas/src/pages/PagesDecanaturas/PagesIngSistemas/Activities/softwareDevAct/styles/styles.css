@@ -51,25 +51,33 @@
 }
 
 .interactive-face {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
   border: 3px solid #FF9800;
   border-radius: 50%;
   background: linear-gradient(45deg, #FFE0B2, #FFCC80);
   margin: 20px;
-  transition: all 0.3s ease;
+  width: fit-content;
+  height: fit-content;
+}
+
+.eyes-container {
+  display: flex;
+  gap: 10px; /* Espacio entre los ojos */
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: fit-content;
+}
+
+.eyes-container .eye {
+  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
+  height: 20%; /* Mantén la misma proporción */
+  object-fit: contain; /* Mantiene las proporciones de la imagen */
   cursor: pointer;
-}
-
-.interactive-face:hover {
-  box-shadow: 0 8px 16px rgba(255, 152, 0, 0.3);
-}
-
-.face-row {
-  display: block;
-  text-align: center;
-  margin: 10px 0;
-  min-height: 30px;
 }
 
 .hair {
@@ -77,47 +85,21 @@
   display: inline-block;
 }
 
-.eye {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-block;
-  transform: scale(0.5);
-}
-
 .right-eye {
   rotate: y 180deg;
 }
 
-.eye:hover {
-  transform: scale(0.7);
-}
-
 .nose {
-  font-size: 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
+  height: 20%;
+}
+
+.mouth {
+  cursor: pointer;
   display: inline-block;
-}
-
-.nose:hover {
-  transform: rotate(10deg) scale(1.1);
-}
-
-.mouth img {
-  transform: scale(0.5);
-}
-
-.space {
-  display: inline-block;
-  width: 20px;
-}
-
-.code-demo {
-  margin-top: 15px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 5px;
-  border-left: 4px solid #2196F3;
+  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
+  height: 20%;
 }
 
 /* Responsive */
@@ -125,13 +107,5 @@
   .interactive-face {
     padding: 15px;
     margin: 10px;
-  }
-  
-  .eye, .mouth {
-    font-size: 24px;
-  }
-  
-  .nose {
-    font-size: 18px;
   }
 }
