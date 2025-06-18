@@ -76,22 +76,6 @@ function InteractionContainer() {
             const nose = document.getElementById('nose');
             const face = document.getElementById('interactive-face');
 
-            // Función para guiñar ojo izquierdo
-            const winkLeft = () => {
-                if (leftEye) leftEye.textContent = '😉';
-                setTimeout(() => {
-                    if (leftEye) leftEye.textContent = '👁️';
-                }, 500);
-            };
-
-            // Función para guiñar ojo derecho
-            const winkRight = () => {
-                if (rightEye) rightEye.textContent = '😉';
-                setTimeout(() => {
-                    if (rightEye) rightEye.textContent = '👁️';
-                }, 500);
-            };
-
             // Función para cambiar expresión de la boca
             const changeMouth = () => {
                 if (mouth) {
@@ -110,15 +94,6 @@ function InteractionContainer() {
                     }, 300);
                 }
             };
-
-            // Eventos del mouse
-            if (leftEye) {
-                leftEye.addEventListener('mouseenter', winkLeft);
-            }
-            
-            if (rightEye) {
-                rightEye.addEventListener('mouseenter', winkRight);
-            }
             
             if (mouth) {
                 mouth.addEventListener('click', changeMouth);
@@ -128,16 +103,6 @@ function InteractionContainer() {
                 nose.addEventListener('mouseenter', moveNose);
             }
 
-            // Efecto hover para toda la cara
-            if (face) {
-                face.addEventListener('mouseenter', () => {
-                    face.style.transform = 'scale(1.1)';
-                });
-                
-                face.addEventListener('mouseleave', () => {
-                    face.style.transform = 'scale(1)';
-                });
-            }
         };
 
         // Ejecutar después de que el componente se monte
@@ -147,27 +112,27 @@ function InteractionContainer() {
     return (
         <React.Fragment>
             <div className="interaction-section">
-
                 <div className="face-demo">
-                    <h3>🤖 Mi Rostro Interactivo</h3>
-                    <p><em>Instrucciones: Pasa el mouse sobre los ojos y nariz, haz clic en la boca</em></p>
                     <div id="interactive-face" className="interactive-face">
                         <div className="face-row hair-row">
                             <span className="hair">💇‍♂️</span>
                         </div>
                         
                         <div className="face-row eyes-row">
-                            <span id="left-eye" className="eye left-eye">👁️</span>
+                            <span id="left-eye" className="eye left-eye">
+                                <img src={getImage("ojos", "ojo1")} alt="ojo izquierdo" />
+                            </span>
                             <span className="space"></span>
-                            <span id="right-eye" className="eye right-eye">👁️</span>
+                            <span id="right-eye" className="eye right-eye">
+                                <img src={getImage("ojos", "ojo1")} alt="ojo derecho" />
+                            </span>
                         </div>
                         
                         <div className="face-row nose-row">
                             <span className="space"></span>
                             <span id="nose" className="nose">👃</span>
                             <span className="space"></span>
-                        </div>
-                        
+                        </div>   
                         <div className="face-row mouth-row">
                             <span id="mouth" className="mouth">
                                 <img src={getImage("sonrisas", "sonrisa1")} alt="sonrisa" />

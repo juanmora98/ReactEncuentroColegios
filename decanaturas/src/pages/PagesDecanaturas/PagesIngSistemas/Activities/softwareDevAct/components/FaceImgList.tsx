@@ -11,10 +11,10 @@ import Sonrisa1 from "resources/img/Sistemas/ActDiaIngeniero/bocas/sonrisa1.png"
 // Crear un objeto que contenga todas las imágenes
 export const FaceImages = {
   ojos: {
-    ojos1: ojos1,
-    ojos2: ojos2,
-    ojos3: ojos3,
-    ojos4: ojos4
+    ojo1: ojos1,
+    ojo2: ojos2,
+    ojo3: ojos3,
+    ojo4: ojos4
   },
   sonrisas: {
     sonrisa1: Sonrisa1,
