@@ -1,6 +1,13 @@
 RewriteEngine On
 RewriteBase /colegios/
-RewriteRule ^index\.html$ - [L]
+
+# Manejar archivos estáticos
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /colegios/index.html [L]
+
+# Excluir archivos con extensiones específicas
+RewriteCond %{REQUEST_URI} !\.(?:css|js|map|jpe?g|gif|png|ico|svg|woff2?)$ [NC]
+
+# Redirigir al index.html
+RewriteRule ^(.*)$ index.html [L,QSA]
+
