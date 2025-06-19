@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /~1019138578/
+RewriteBase /colegios/
 RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /~1019138578/index.html [L]
+RewriteRule . /colegios/index.html [L]
