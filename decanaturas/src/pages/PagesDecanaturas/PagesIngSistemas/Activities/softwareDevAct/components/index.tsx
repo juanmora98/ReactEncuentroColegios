@@ -4,6 +4,7 @@ import NavBar from 'core/components/NavBar/components/NavBar';
 import ActivityDescription from 'pages/PagesActividades/components/ActivityDescription';
 import "../styles/styles.css";
 import {NumberGenerator} from '../scripts/ActivityController';
+import imagenLupa from "src/resources/img/Estadistica/IconLupa.png";
 
 function Index() {
     return (
@@ -13,6 +14,8 @@ function Index() {
                 <DescriptionContainer />
                 <PresentationContainer />
                 <InteractionContainer />
+                <ScrumContainer />
+                <ActivityContainer />
             </main>
         </React.Fragment>
     );
@@ -21,7 +24,10 @@ function Index() {
 function PresentationContainer() {
     return (
         <React.Fragment>
-            <div className="presentation-Container">
+            <div className="container">
+                <h3>
+                    DESARROLLO DE SOFTWARE
+                </h3>
                 <p>
                     El desarrollo de software ofrece múltiples caminos, siendo uno de los más populares la creación de aplicaciones y páginas web. Este campo se divide principalmente en dos áreas: el frontend, que se encarga de la interfaz visual con la que interactúa el usuario, y el backend, que gestiona la lógica del sistema, bases de datos y servidores. Ambos trabajan en conjunto para ofrecer experiencias funcionales y atractivas.
                 </p>
@@ -29,12 +35,7 @@ function PresentationContainer() {
                     <img 
                         src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif1.gif`}
                         alt="Desarrollo de software" 
-                        style={{
-                            width: '100%',
-                            maxWidth: '400px',
-                            height: 'auto',
-                            borderRadius: '8px'
-                        }}
+                        className="gif-image"
                     />
                 </div>
                 <p>
@@ -89,7 +90,7 @@ function InteractionContainer() {
     const keyButtonId = ["Activar", "Desactivar"];
 
     return (
-        <React.Fragment>
+        <div className="container">
             <div className={interactiveFace}>
                 <div className= "eyes-container">
                     <img src={getImage("ojos", activeEyes)} alt="ojo izquierdo" className="face-Component"
@@ -114,7 +115,7 @@ function InteractionContainer() {
                     {jsButton}
                 </button>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 
@@ -135,6 +136,87 @@ function FaceComponentHandle(props){
     const listSize = Object.keys(props.componentList).length;
     const eyeNumber = NumberGenerator(listSize, props.activeComponent, props.id);
     props.setActive(props.id+eyeNumber);
+}
+
+function ScrumContainer() {
+    return (
+        <div className="container scrum-container">
+            <h3>SCRUM</h3>
+            <p>
+                SCRUM es un marco de trabajo ágil utilizado para gestionar proyectos complejos, especialmente en el desarrollo de software. Se basa en ciclos iterativos llamados sprints, que permiten entregar valor de manera incremental y adaptarse a los cambios rápidamente.
+            </p>
+            <div className="gif-container">
+                <img 
+                    src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif2.gif`}
+                    alt="Desarrollo de software" 
+                    className="gif-image"
+                />
+            </div>
+            <p>
+                Los equipos SCRUM están compuestos por tres roles principales: el Product Owner, el Scrum Master y el Equipo de Desarrollo. El Product Owner se encarga de definir y priorizar los objetivos del proyecto, asegurando que se cumplan las necesidades del cliente. El Scrum Master facilita el proceso, eliminando obstáculos y promoviendo las prácticas ágiles. El Equipo de Desarrollo, por su parte, es responsable de crear los entregables del proyecto, colaborando estrechamente para alcanzar los objetivos del sprint.
+            </p>
+            <p>
+                Cada rol es esencial para el éxito del equipo: el Product Owner garantiza la dirección correcta, el Scrum Master asegura la eficiencia del proceso y el Equipo de Desarrollo materializa las ideas en productos funcionales.
+            </p>
+            <div className="gif-container">
+                <img 
+                    src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif3.gif`}
+                    alt="Desarrollo de software" 
+                    className="gif-image"
+                />
+            </div>
+        </div>
+    );
+}
+
+function ActivityContainer() {
+    return (
+        <React.Fragment>
+            <div className="container">
+                <h3>ACTIVIDAD</h3>
+                <div className="text-container">
+                    <p>
+                        Ahora que has aprendido sobre el desarrollo de software y SCRUM, es tu turno de aplicar estos conocimientos. 
+                        Tu tarea es crear una página web sencilla utilizando HTML, CSS y JavaScript, y organizar tu trabajo siguiendo la metodología SCRUM.
+                    </p>
+                    <p>
+                        Formando equipos de 3 a 5 personas, cada uno asumirá un rol dentro del equipo SCRUM:  Scrum Master y equipo de desarrolladores.
+                    </p>
+                    <p>
+                        El Scrum Master será el encargado de escuchar las tareas asignadas por el product owner y asegurar que el equipo siga las prácticas SCRUM, mientras que los desarrolladores se encargarán de implementar las funcionalidades de la página web.
+                    </p>
+                    <p>
+                        Pueden utilizar las herramientas de desarrollo proporcionadas por el profesor para crear su proyecto.
+                    </p>
+                </div>
+                <div className="resources-container">
+                    <h4>
+                        RECURSOS Y HERRAMIENTAS
+                    </h4>
+                    <div className="resources-description">
+                                                
+                    </div>
+                </div>
+            </div>
+        </React.Fragment>
+    );
+}
+
+function ResourceActivity(props) {
+    return (
+        <div className="resource-item">
+            <div className="resource-text">
+                <h4>{props.title}</h4>
+                <p>{props.description}</p>
+                <a href={props.link} target="_blank" rel="noopener noreferrer" className="resource-link">
+                    Ver recurso
+                </a>
+            </div>
+            <a href="">
+                <img src={props.img} alt={props.title} className="resource-image" />
+            </a>
+        </div>
+    );
 }
 
 export default Index;
