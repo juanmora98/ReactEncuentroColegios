@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/colegios/static/css/main.bb1eedfe.css",
+    "main.js": "/colegios/static/js/main.719b4baf.js",
+    "static/media/tutorial.png": "/colegios/static/media/tutorial.30da221bfbe2bf1f37d5.png",
+    "static/media/IconLupa.png": "/colegios/static/media/IconLupa.512ac87777e9bbb15805.png",
+    "static/media/IconHelp.png": "/colegios/static/media/IconHelp.408f277b5ce5884ee1b7.png",
+    "static/media/IAIcon.png": "/colegios/static/media/IAIcon.b70969a2948a552ed627.png",
+    "static/media/LogoTipo1.jpg": "/colegios/static/media/LogoTipo1.d42ee10e93170b663ffb.jpg",
+    "index.html": "/colegios/index.html",
+    "main.bb1eedfe.css.map": "/colegios/static/css/main.bb1eedfe.css.map",
+    "main.719b4baf.js.map": "/colegios/static/js/main.719b4baf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bb1eedfe.css",
+    "static/js/main.719b4baf.js"
+  ]
+}
