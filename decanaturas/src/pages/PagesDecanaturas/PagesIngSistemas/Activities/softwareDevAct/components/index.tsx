@@ -1,10 +1,27 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HTMLPage from './index';
 import { FaceImages, getImage } from './FaceImgList';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import ActivityDescription from 'pages/PagesActividades/components/ActivityDescription';
 import "../styles/styles.css";
 import {NumberGenerator} from '../scripts/ActivityController';
 import imagenLupa from "src/resources/img/Estadistica/IconLupa.png";
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+
+root.render(
+  <React.StrictMode>
+    <Router basename={`${process.env.PUBLIC_URL}/ing-sistemas/actividad/diaingeniero`}>
+      <Routes>
+        <Route path="/" element={<HTMLPage />} />
+      </Routes>
+    </Router>
+  </React.StrictMode>
+);
 
 function Index() {
     return (
