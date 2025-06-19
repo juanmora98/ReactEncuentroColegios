@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /colegios/
+RewriteBase /~1019138578/
 
 # Manejar archivos estáticos
 RewriteCond %{REQUEST_FILENAME} !-f
