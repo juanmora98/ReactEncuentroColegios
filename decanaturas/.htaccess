@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /~1019138578/
+RewriteBase /colegios/
 
 # Manejar archivos estáticos
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -10,3 +10,4 @@ RewriteCond %{REQUEST_URI} !\.(?:css|js|map|jpe?g|gif|png|ico|svg|woff2?)$ [NC]
 
 # Redirigir al index.html
 RewriteRule ^(.*)$ index.html [L,QSA]
+
