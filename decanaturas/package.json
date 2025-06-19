@@ -10,9 +10,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build": "react-scripts build && node scripts/CopyModulesHtml.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build && cp .htaccess build/.htaccess && node scripts/CopyModulesHtml.js",
     "build:dev": "react-scripts build && node scripts/CopyModulesHtml.js",
-    "prebuild": "node scripts/CopyModulesHtml.js"
+    "prebuild": "node scripts/CopyModulesHtml.js",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

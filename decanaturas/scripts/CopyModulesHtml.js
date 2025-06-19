@@ -4,7 +4,7 @@ const path = require('path');
 
 const modules = [
   {
-    source: 'pages/PagesDecanaturas/PagesIngSistemas/Activities/softwareDevAct/components/index.html',
+    source: 'src/pages/PagesDecanaturas/PagesIngSistemas/Activities/softwareDevAct/components/index.html',
     dest: 'build/diaIngeniero.html'
   }
 ];
