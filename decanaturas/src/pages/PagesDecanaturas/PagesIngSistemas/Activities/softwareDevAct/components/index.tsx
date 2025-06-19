@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FaceImages, getImage } from './FaceImgList';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import ActivityDescription from 'pages/PagesActividades/components/ActivityDescription';
 import "../styles/styles.css";
+import {NumberGenerator} from '../scripts/ActivityController';
 
 function Index() {
     return (
         <React.Fragment>
             <NavBar ing="sistemas" ingName="Ingenieria de sistemas" />
-            <main>
+            <main className="main-container">
                 <DescriptionContainer />
                 <PresentationContainer />
                 <InteractionContainer />
@@ -24,7 +25,18 @@ function PresentationContainer() {
                 <p>
                     El desarrollo de software ofrece múltiples caminos, siendo uno de los más populares la creación de aplicaciones y páginas web. Este campo se divide principalmente en dos áreas: el frontend, que se encarga de la interfaz visual con la que interactúa el usuario, y el backend, que gestiona la lógica del sistema, bases de datos y servidores. Ambos trabajan en conjunto para ofrecer experiencias funcionales y atractivas.
                 </p>
-                <img src="" alt="" />
+                <div className="gif-container">
+                    <img 
+                        src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif1.gif`}
+                        alt="Desarrollo de software" 
+                        style={{
+                            width: '100%',
+                            maxWidth: '400px',
+                            height: 'auto',
+                            borderRadius: '8px'
+                        }}
+                    />
+                </div>
                 <p>
                     En el mundo del desarrollo web, el frontend se apoya en tecnologías clave como HTML, CSS y JavaScript. HTML estructura el contenido de la página, CSS se encarga del diseño y estilo visual, y JavaScript añade interactividad y dinamismo. Juntas, estas herramientas hacen posible la experiencia que el usuario ve y utiliza en su navegador.
                 </p>
@@ -66,47 +78,63 @@ function DescriptionContainer() {
 }
 
 function InteractionContainer() {
-    
-    useEffect(() => {
-        // JavaScript para interactividad del rostro
-        const addInteractivity = () => {
-            const leftEye = document.getElementById('left-eye');
-            const rightEye = document.getElementById('right-eye');
-            const mouth = document.getElementById('mouth');
-            const nose = document.getElementById('nose');
-            const face = document.getElementById('interactive-face');
 
-            // Función para cambiar expresión de la boca
-            const changeMouth = () => {
-                if (mouth) {
-                    const expressions = ['😊', '😮', '🤔', '😄', '👄'];
-                    const randomExpression = expressions[Math.floor(Math.random() * expressions.length)];
-                    mouth.textContent = randomExpression;
-                }
-            };
-
-        };
-
-        // Ejecutar después de que el componente se monte
-        setTimeout(addInteractivity, 100);
-    }, []);
+    const [activeEyes, setActiveEyes] = React.useState("ojo1");
+    const [activeNose, setActiveNoses] = React.useState("nariz1");
+    const [activeMouth, setActiveMouth] = React.useState("sonrisa1");
+    const [interactiveFace, setInteractiveFace] = React.useState("");
+    const [cssButton, setCssButton] = React.useState("Activar CSS");
+    const [jsButton, setJsButton] = React.useState("Activar JS");
+    const [jsActive, setJsActive] = React.useState(false);
+    const keyButtonId = ["Activar", "Desactivar"];
 
     return (
         <React.Fragment>
-            <div className="interaction-section">
-                <div className="face-demo">
-                    <div id="interactive-face" className="interactive-face">
-                        <div className= "eyes-container">
-                            <img src={getImage("ojos", "ojo1")} alt="ojo izquierdo" className="eye"/>
-                            <img src={getImage("ojos", "ojo1")} alt="ojo derecho" className="eye right-eye"/>
-                        </div>
-                        <img src={getImage("narices", "nariz1")} alt="nariz" className="nose"/>
-                        <img src={getImage("sonrisas", "sonrisa1")} alt="sonrisa" className="mouth"/>
-                    </div>
+            <div className={interactiveFace}>
+                <div className= "eyes-container">
+                    <img src={getImage("ojos", activeEyes)} alt="ojo izquierdo" className="face-Component"
+                    onClick={() => jsActive && FaceComponentHandle({componentList: FaceImages.ojos, activeComponent: activeEyes, setActive: setActiveEyes, id: "ojo"})}
+                    />
+                    <img src={getImage("ojos", activeEyes)} alt="ojo derecho" className="face-Component right-eye"
+                    onClick={() => jsActive && FaceComponentHandle({componentList: FaceImages.ojos, activeComponent: activeEyes,  setActive: setActiveEyes, id: "ojo"})}
+                    />
                 </div>
+                <img src={getImage("narices", activeNose)} alt="nariz" className="face-Component"
+                onClick={() => jsActive && FaceComponentHandle({componentList: FaceImages.narices, activeComponent: activeNose, setActive: setActiveNoses, id: "nariz"})}
+                />
+                <img src={getImage("sonrisas", activeMouth)} alt="sonrisa" className="face-Component"
+                onClick={() => jsActive && FaceComponentHandle({componentList: FaceImages.sonrisas, activeComponent: activeMouth, setActive: setActiveMouth, id: "sonrisa"})}
+                />
+            </div>
+            <div className="buttons-container">
+                <button onClick={() => changeButtons({buttonText:cssButton, keyButtonId, setButtonText:setCssButton, setInteractiveFace})}className="custom-buttons">
+                    {cssButton}
+                </button>
+                <button onClick={() => changeButtons({buttonText:jsButton, keyButtonId, setButtonText:setJsButton, setJsActive})}className="custom-buttons">
+                    {jsButton}
+                </button>
             </div>
         </React.Fragment>
     );
+}
+
+function changeButtons(props) {
+    const textParts = props.buttonText.split(" ");
+    const action = textParts[0];
+    const technology = textParts[1];
+    props.setButtonText(`${action === props.keyButtonId[0] ? props.keyButtonId[1] : props.keyButtonId[0]} ${technology}`);
+    if(technology === "CSS"){
+        props.setInteractiveFace(action === props.keyButtonId[0] ? "interactive-face" : "");
+    }
+    else{
+        props.setJsActive(action === props.keyButtonId[0] ? true : false);
+    }
+}
+
+function FaceComponentHandle(props){
+    const listSize = Object.keys(props.componentList).length;
+    const eyeNumber = NumberGenerator(listSize, props.activeComponent, props.id);
+    props.setActive(props.id+eyeNumber);
 }
 
 export default Index;

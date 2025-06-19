@@ -1,9 +1,25 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f0f0f0; /* Fondo claro para el contenedor principal */
+}
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-top: 15px;
+}
+
+.gif-image{
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
 }
 
 .presentation-Container {
@@ -19,37 +35,6 @@
     font-size: 18px;
 }
 
-/* Estilos para la sección de interacción */
-.interaction-section {
-  width: 90%;
-  margin: 20px auto;
-  padding: 20px;
-  border: 2px solid #4CAF50;
-  border-radius: 15px;
-  background-color: #f9f9f9;
-  text-align: center;
-}
-
-.interaction-section h2 {
-  color: #2196F3;
-  margin-bottom: 15px;
-}
-
-.interaction-section ul {
-  text-align: left;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Estilos para el rostro interactivo */
-.face-demo {
-  margin: 30px 0;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
 .interactive-face {
   display: flex;
   flex-direction: column;
@@ -59,47 +44,33 @@
   border: 3px solid #FF9800;
   border-radius: 50%;
   background: linear-gradient(45deg, #FFE0B2, #FFCC80);
-  margin: 20px;
-  width: fit-content;
-  height: fit-content;
+  width: 40%;
+  height: 250px;
 }
 
-.eyes-container {
+.interactive-face .eyes-container {
   display: flex;
   gap: 10px; /* Espacio entre los ojos */
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: fit-content;
-  height: fit-content;
+  width: 50%;
+  height: 50%;
 }
 
-.eyes-container .eye {
-  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
-  height: 20%; /* Mantén la misma proporción */
-  object-fit: contain; /* Mantiene las proporciones de la imagen */
-  cursor: pointer;
-}
-
-.hair {
-  font-size: 24px;
-  display: inline-block;
-}
-
-.right-eye {
+.interactive-face .right-eye {
   rotate: y 180deg;
 }
 
-.nose {
+.interactive-face .face-Component {
   cursor: pointer;
-  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
-  height: 20%;
 }
 
-.mouth {
-  cursor: pointer;
-  display: inline-block;
-  width: 20%;  /* Ajusta este valor para el tamaño que quieras */
-  height: 20%;
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Espacio entre los botones */
+  margin-top: 10px;
 }
 
 /* Responsive */
