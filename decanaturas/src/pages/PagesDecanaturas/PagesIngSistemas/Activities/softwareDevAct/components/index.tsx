@@ -1,27 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HTMLPage from './index';
 import { FaceImages, getImage } from './FaceImgList';
 import NavBar from 'core/components/NavBar/components/NavBar';
 import ActivityDescription from 'pages/PagesActividades/components/ActivityDescription';
 import "../styles/styles.css";
 import {NumberGenerator} from '../scripts/ActivityController';
-import imagenLupa from "src/resources/img/Estadistica/IconLupa.png";
-
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-
-root.render(
-  <React.StrictMode>
-    <Router basename={`${process.env.PUBLIC_URL}/ing-sistemas/actividad/diaingeniero`}>
-      <Routes>
-        <Route path="/" element={<HTMLPage />} />
-      </Routes>
-    </Router>
-  </React.StrictMode>
-);
+import iconLupa from "resources/img/Sistemas/ActDiaIngeniero/icons/IconLupa.png";
+import imagenConvinado from "resources/img/Sistemas/ActDiaIngeniero/icons/htmlcssjs.png";
+import imagenIA from "resources/img/Sistemas/ActDiaIngeniero/icons/blackbox.png";
 
 function Index() {
     return (
@@ -49,18 +34,16 @@ function PresentationContainer() {
                     El desarrollo de software ofrece múltiples caminos, siendo uno de los más populares la creación de aplicaciones y páginas web. Este campo se divide principalmente en dos áreas: el frontend, que se encarga de la interfaz visual con la que interactúa el usuario, y el backend, que gestiona la lógica del sistema, bases de datos y servidores. Ambos trabajan en conjunto para ofrecer experiencias funcionales y atractivas.
                 </p>
                 <div className="gif-container">
-                    <img 
+                    <img
                         src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif1.gif`}
-                        alt="Desarrollo de software" 
+                        alt="Desarrollo de software"
                         className="gif-image"
                     />
                 </div>
                 <p>
                     En el mundo del desarrollo web, el frontend se apoya en tecnologías clave como HTML, CSS y JavaScript. HTML estructura el contenido de la página, CSS se encarga del diseño y estilo visual, y JavaScript añade interactividad y dinamismo. Juntas, estas herramientas hacen posible la experiencia que el usuario ve y utiliza en su navegador.
                 </p>
-                
             </div>
-            
         </React.Fragment>
     );
 }
@@ -68,14 +51,14 @@ function PresentationContainer() {
 function DescriptionContainer() {
     return(
         <div className="container">
-            <ActivityDescription 
+            <ActivityDescription
             title="¡Bienvenido a la actividad de Ingeniería de sistemas!"
             activityTitle="¡Dia como ingeniero!"
             subtitle="¡El primer paso hacia el futuro!"
             description={
                 <React.Fragment>
                     <p>
-                        ¿Te imaginas crear tu propia página web y entender cómo trabajan los equipos de tecnología en las grandes empresas? 
+                        ¿Te imaginas crear tu propia página web y entender cómo trabajan los equipos de tecnología en las grandes empresas?
                     </p>
                     <p>
                         En esta actividad te convertirás en desarrollador por un día. Aprenderás a dar vida a una página usando HTML, CSS y JavaScript, y descubrirás cómo los verdaderos equipos de programación organizan sus ideas y proyectos usando la metodología SCRUM.
@@ -163,9 +146,9 @@ function ScrumContainer() {
                 SCRUM es un marco de trabajo ágil utilizado para gestionar proyectos complejos, especialmente en el desarrollo de software. Se basa en ciclos iterativos llamados sprints, que permiten entregar valor de manera incremental y adaptarse a los cambios rápidamente.
             </p>
             <div className="gif-container">
-                <img 
+                <img
                     src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif2.gif`}
-                    alt="Desarrollo de software" 
+                    alt="Desarrollo de software"
                     className="gif-image"
                 />
             </div>
@@ -176,9 +159,9 @@ function ScrumContainer() {
                 Cada rol es esencial para el éxito del equipo: el Product Owner garantiza la dirección correcta, el Scrum Master asegura la eficiencia del proceso y el Equipo de Desarrollo materializa las ideas en productos funcionales.
             </p>
             <div className="gif-container">
-                <img 
+                <img
                     src={`${process.env.PUBLIC_URL}/resources/gif/actividades/ingSistemas/gif3.gif`}
-                    alt="Desarrollo de software" 
+                    alt="Desarrollo de software"
                     className="gif-image"
                 />
             </div>
@@ -206,12 +189,23 @@ function ActivityContainer() {
                         Pueden utilizar las herramientas de desarrollo proporcionadas por el profesor para crear su proyecto.
                     </p>
                 </div>
-                <div className="resources-container">
-                    <h4>
+                <div className="container">
+                    <h3>
                         RECURSOS Y HERRAMIENTAS
-                    </h4>
+                    </h3>
                     <div className="resources-description">
-                                                
+                        <ResourceActivity title="DOCUMENTACION (PROFESOR)"
+                            link="https://drive.google.com/file/d/14AcG9Kp1HwlRYGJs9VU7S0GahVcFN4kx/view?usp=drive_link"
+                            img={iconLupa}
+                        />
+                        <ResourceActivity title="BLACKBOX IA"
+                            link="https://www.blackbox.ai/"
+                            img={imagenIA}
+                        />
+                        <ResourceActivity title="HTML CSS JS EDITOR"
+                            link="https://html-css-js.com/"
+                            img={imagenConvinado}
+                        />
                     </div>
                 </div>
             </div>
@@ -224,14 +218,10 @@ function ResourceActivity(props) {
         <div className="resource-item">
             <div className="resource-text">
                 <h4>{props.title}</h4>
-                <p>{props.description}</p>
                 <a href={props.link} target="_blank" rel="noopener noreferrer" className="resource-link">
-                    Ver recurso
+                    <img src={props.img} alt={props.title} className="resource-image" />
                 </a>
             </div>
-            <a href="">
-                <img src={props.img} alt={props.title} className="resource-image" />
-            </a>
         </div>
     );
 }
